@@ -46,7 +46,8 @@ button:disabled {
 }
 
 #codesMenu input,
-#investmentsMenu input {
+#investmentsMenu input,
+#settingsMenu select {
     margin: 10px 0;
     padding: 5px;
 }
@@ -61,7 +62,8 @@ button:disabled {
     height: 150px;
 }
 
-#howToPlayMenu {
+#howToPlayMenu,
+#settingsMenu {
     display: none;
     max-width: 400px;
 }

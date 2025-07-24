@@ -1,0 +1,5 @@
+@media (max-width: 600px) {
+    canvas { width: 100%; height: auto; }
+    #ui { margin-left: 0; text-align: center; }
+    #menu { width: 90%; max-width: 300px; }
+}

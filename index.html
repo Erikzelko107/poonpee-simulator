@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Hraj Poo'n'Pee Simulator a zbieraj Poop Coiny!">
     <meta name="keywords" content="Poo'n'Pee, simulator, hra, Poop Coiny">
-    <meta name="author" content="Tvoj Meno">
+    <meta name="author" content="Erikzelko107">
     <title>Poo'n'Pee Simulator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -35,6 +35,7 @@
         <button id="investmentsButton">Investície</button>
         <button id="achievementsButton">Achievements</button>
         <button id="howToPlayButton">Ako Hrať</button>
+        <button id="settingsButton">Nastavenia</button>
         <button id="closeMenuButton">Zatvoriť</button>
         <div id="upgradesMenu" style="display: none;">
             <h3>Upgrady</h3>
@@ -103,6 +104,7 @@
             <button id="graphStock2">Skibidi Toilet</button>
             <button id="graphStock3">MineKakať</button>
             <button id="graphStock4">CikiBook</button>
+            <button id="graphStock5">MicroPoop</button>
         </div>
         <div id="achievementsMenu" style="display: none;">
             <h3>Achievements</h3>
@@ -121,9 +123,32 @@
                 <li><strong>Kódy</strong>: Zadaj kódy (napr. "TutorialMoney" pre 250 coinov) na odmeny.</li>
                 <li><strong>Investície</strong>: Kúp/predaj akcie firiem, ktorých ceny kolíšu každých 30s. Sleduj graf cien.</li>
                 <li><strong>Achievements</strong>: Plň úlohy (napr. kúp všetky skiny) pre odmeny.</li>
+                <li><strong>Nastavenia</strong>: Uprav font, jazyk alebo zapni/vypni častice pre kadenie, čúranie a Critical Hity.</li>
             </ul>
             <p><strong>Klávesové skratky</strong>: Stlač <strong>K</strong> na Kadenie, <strong>C</strong> na Čúranie, <strong>M</strong> na otvorenie Menu, <strong>X</strong> na zatvorenie podmenu alebo celého menu.</p>
             <p>Hraj, zbieraj coiny a staň sa majstrom záchoda!</p>
+        </div>
+        <div id="settingsMenu" style="display: none;">
+            <h3>Nastavenia</h3>
+            <button class="close-submenu" onclick="toggleMenu(true)">X</button>
+            <h4>Častice</h4>
+            <label><input type="checkbox" id="poopParticles" checked> Častice Kadenia</label><br>
+            <label><input type="checkbox" id="peeParticles" checked> Častice Čúrania</label><br>
+            <label><input type="checkbox" id="critParticles" checked> Častice Critical Hit</label><br>
+            <h4>Font</h4>
+            <select id="fontSelect">
+                <option value="Arial">Arial</option>
+                <option value="Impact">Impact</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Century Gothic">Century Gothic</option>
+                <option value="Comic Sans MS">Comic Sans</option>
+                <option value="Microsoft YaHei">Microsoft YaHei</option>
+            </select>
+            <h4>Jazyk</h4>
+            <select id="languageSelect">
+                <option value="sk">Slovenčina</option>
+                <option value="en">English</option>
+            </select>
         </div>
     </div>
     <script src="script.js" defer></script>

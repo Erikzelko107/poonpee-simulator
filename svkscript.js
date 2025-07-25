@@ -35,7 +35,8 @@ const STOCKS = [
     { name: 'Caca Cola', price: 2000, basePrice: 2000, owned: 0, history: [2000] },
     { name: 'Skibidi Toilet', price: 5000, basePrice: 5000, owned: 0, history: [5000] },
     { name: 'MineKakať', price: 10000, basePrice: 10000, owned: 0, history: [10000] },
-    { name: 'CikiBook', price: 20000, basePrice: 20000, owned: 0, history: [20000] }
+    { name: 'CikiBook', price: 20000, basePrice: 20000, owned: 0, history: [20000] },
+    { name: 'MicroPoop', price: 30000, basePrice: 30000, owned: 0, history: [30000] }
 ];
 const SKINS = [
     { name: 'Základný', color: '#ffffff' },
@@ -61,7 +62,8 @@ const ACHIEVEMENTS = [
     { name: 'Krviprelievač', description: 'Investuj 100,000 Poop Coinov', reward: 2000, achieved: false, condition: () => STOCKS.reduce((sum, stock) => sum + stock.owned * stock.basePrice, 0) >= 100000 },
     { name: 'Zberateľ Skinov', description: 'Vlastni všetky známe skiny', reward: 3000, achieved: false, condition: () => ownedSkins.filter(id => id !== 6).length === 6 },
     { name: 'Gurmán Kadenia', description: 'Vlastni všetky známe jedlá', reward: 2500, achieved: false, condition: () => ownedFoods.filter(id => id !== 5).length === 5 },
-    { name: 'Päťminútová Výdrž', description: 'Vypni Auto Kadenie a Auto Čúranie na 5 minút (ak sú kúpené)', reward: 1500, achieved: false, condition: () => false }
+    { name: 'Päťminútová Výdrž', description: 'Vypni Auto Kadenie a Auto Čúranie na 5 minút (ak sú kúpené)', reward: 1500, achieved: false, condition: () => false },
+    { name: 'Kakamillionár', description: 'Vlastni 20 akcií MicroPoop', reward: 4000, achieved: false, condition: () => STOCKS[5].owned >= 20 }
 ];
 let currentSkin = 0;
 let currentFood = 0;
@@ -81,6 +83,12 @@ let usedCodes = [];
 let autoDisabledStartTime = null;
 let particles = [];
 let currentGraphStock = 0;
+let settings = {
+    poopParticles: true,
+    peeParticles: true,
+    critParticles: true,
+    font: 'Arial'
+};
 
 function saveProgress() {
     const gameState = {
@@ -100,6 +108,7 @@ function saveProgress() {
         isAutoPeeEnabled,
         isOnlyCritical,
         usedCodes,
+        settings,
         STOCKS: STOCKS.map(stock => ({
             name: stock.name,
             price: stock.price,
@@ -135,6 +144,12 @@ function loadProgress() {
         isAutoPeeEnabled = gameState.isAutoPeeEnabled || false;
         isOnlyCritical = gameState.isOnlyCritical || false;
         usedCodes = gameState.usedCodes || [];
+        settings = gameState.settings || {
+            poopParticles: true,
+            peeParticles: true,
+            critParticles: true,
+            font: 'Arial'
+        };
         STOCKS.forEach((stock, index) => {
             if (gameState.STOCKS[index]) {
                 stock.price = gameState.STOCKS[index].price;
@@ -148,10 +163,23 @@ function loadProgress() {
             }
         });
     }
+    applySettings();
+    updateUI();
+}
+
+function applySettings() {
+    document.body.style.fontFamily = settings.font;
+    ctx.font = `20px ${settings.font}`;
+    stockGraphCtx.font = `12px ${settings.font}`;
+    document.getElementById('poopParticles').checked = settings.poopParticles;
+    document.getElementById('peeParticles').checked = settings.peeParticles;
+    document.getElementById('critParticles').checked = settings.critParticles;
+    document.getElementById('fontSelect').value = settings.font;
     updateUI();
 }
 
 function createParticles(x, y, count, isCritical, isPoop) {
+    if ((isPoop && !settings.poopParticles) || (!isPoop && !settings.peeParticles) || (isCritical && !settings.critParticles)) return;
     for (let i = 0; i < count; i++) {
         particles.push({
             x: x,
@@ -223,12 +251,12 @@ function getCritMultiplier(isAuto, isPoop) {
 }
 
 function updateStocks(currentTime) {
-    if (currentTime - lastStockUpdate >= 30000) { // Každých 30 sekúnd
+    if (currentTime - lastStockUpdate >= 30000) {
         STOCKS.forEach(stock => {
-            const change = Math.random() * 0.2 - 0.1; // ±10% zmena
+            const change = Math.random() * 0.2 - 0.1;
             stock.price = Math.round(Math.max(100, stock.basePrice * (1 + change)));
             stock.history.push(stock.price);
-            if (stock.history.length > 100) stock.history.shift(); // Max 100 záznamov
+            if (stock.history.length > 100) stock.history.shift();
         });
         lastStockUpdate = currentTime;
         saveProgress();
@@ -265,8 +293,7 @@ function drawStockGraph() {
     });
     stockGraphCtx.stroke();
     stockGraphCtx.fillStyle = '#000000';
-    stockGraphCtx.font = '12px Arial';
-    stockGraphCtx.fillText(`${STOCKS[currentGraphStock].name}`, 10, 20);
+    stockGraphCtx.fillText(STOCKS[currentGraphStock].name, 10, 20);
     stockGraphCtx.fillText(`Min: ${minPrice}`, 10, stockGraphCanvas.height - 10);
     stockGraphCtx.fillText(`Max: ${maxPrice}`, 10, 30);
 }
@@ -344,13 +371,56 @@ function updateUI() {
     document.getElementById('skinRuby').textContent = `Rubínový (${ownedSkins.includes(3) ? 'Kúpené' : SKIN_COSTS.ruby})`;
     document.getElementById('skinEmerald').textContent = `Smaragdový (${ownedSkins.includes(4) ? 'Kúpené' : SKIN_COSTS.emerald})`;
     document.getElementById('skinOnyx').textContent = `Onixový (${ownedSkins.includes(5) ? 'Kúpené' : SKIN_COSTS.onyx})`;
+    document.getElementById('selectApple').textContent = 'Jablko';
+    document.getElementById('selectMeat').textContent = 'Mäso';
+    document.getElementById('selectLaxative').textContent = 'Prejímadlo';
+    document.getElementById('selectTaco').textContent = 'Taco Bang';
+    document.getElementById('selectAtomic').textContent = 'Atómová kaša';
+    document.getElementById('selectFarty').textContent = ownedFoods.includes(5) ? 'Zavárané prdy' : 'SecretFood1';
+    document.getElementById('selectBasic').textContent = 'Základný';
+    document.getElementById('selectGold').textContent = 'Zlatý';
+    document.getElementById('selectDiamond').textContent = 'Diamantový';
+    document.getElementById('selectRuby').textContent = 'Rubínový';
+    document.getElementById('selectEmerald').textContent = 'Smaragdový';
+    document.getElementById('selectOnyx').textContent = 'Onixový';
+    document.getElementById('selectOgpink').textContent = ownedSkins.includes(6) ? 'Starý Ružový' : 'SecretSkin1';
+    document.getElementById('toggleAutoPoop').textContent = `Auto Kadenie: ${isAutoPoopEnabled ? 'Zapnuté' : 'Vypnuté'}`;
+    document.getElementById('toggleAutoPee').textContent = `Auto Čúranie: ${isAutoPeeEnabled ? 'Zapnuté' : 'Vypnuté'}`;
+    document.getElementById('codeInput').placeholder = 'Zadaj kód';
+    document.getElementById('submitCode').textContent = 'Potvrdiť';
+    document.getElementById('menu').getElementsByTagName('h2')[0].textContent = 'Menu';
+    document.getElementById('upgradesButton').textContent = 'Upgrady';
+    document.getElementById('shopButton').textContent = 'Obchod';
+    document.getElementById('catalogButton').textContent = 'Katalóg';
+    document.getElementById('codesButton').textContent = 'Kódy';
+    document.getElementById('investmentsButton').textContent = 'Investície';
+    document.getElementById('achievementsButton').textContent = 'Achievements';
+    document.getElementById('howToPlayButton').textContent = 'Ako Hrať';
+    document.getElementById('settingsButton').textContent = 'Nastavenia';
+    document.getElementById('closeMenuButton').textContent = 'Zatvoriť';
+    document.getElementById('upgradesMenu').getElementsByTagName('h3')[0].textContent = 'Upgrady';
+    document.getElementById('shopMenu').getElementsByTagName('h3')[0].textContent = 'Obchod';
+    document.getElementById('shopMenu').getElementsByTagName('h4')[0].textContent = 'Jedlá';
+    document.getElementById('shopMenu').getElementsByTagName('h4')[1].textContent = 'Skiny';
+    document.getElementById('catalogMenu').getElementsByTagName('h3')[0].textContent = 'Katalóg';
+    document.getElementById('catalogMenu').getElementsByTagName('h4')[0].textContent = 'Vybrať Jedlo';
+    document.getElementById('catalogMenu').getElementsByTagName('h4')[1].textContent = 'Vybrať Skin';
+    document.getElementById('catalogMenu').getElementsByTagName('h4')[2].textContent = 'Automatické akcie';
+    document.getElementById('codesMenu').getElementsByTagName('h3')[0].textContent = 'Kódy';
+    document.getElementById('investmentsMenu').getElementsByTagName('h3')[0].textContent = 'Investície';
+    document.getElementById('achievementsMenu').getElementsByTagName('h3')[0].textContent = 'Achievements';
+    document.getElementById('settingsMenu').getElementsByTagName('h3')[0].textContent = 'Nastavenia';
+    document.getElementById('settingsMenu').getElementsByTagName('h4')[0].textContent = 'Častice';
+    document.getElementById('settingsMenu').getElementsByTagName('h4')[1].textContent = 'Font';
+    document.getElementById('poopParticles').nextSibling.textContent = 'Častice Kadenia';
+    document.getElementById('peeParticles').nextSibling.textContent = 'Častice Čúrania';
+    document.getElementById('critParticles').nextSibling.textContent = 'Častice Critical Hit';
     document.getElementById('selectApple').disabled = !ownedFoods.includes(0);
     document.getElementById('selectMeat').disabled = !ownedFoods.includes(1);
     document.getElementById('selectLaxative').disabled = !ownedFoods.includes(2);
     document.getElementById('selectTaco').disabled = !ownedFoods.includes(3);
     document.getElementById('selectAtomic').disabled = !ownedFoods.includes(4);
     document.getElementById('selectFarty').disabled = !ownedFoods.includes(5);
-    document.getElementById('selectFarty').textContent = ownedFoods.includes(5) ? 'Zavárané prdy' : 'SecretFood1';
     document.getElementById('selectBasic').disabled = !ownedSkins.includes(0);
     document.getElementById('selectGold').disabled = !ownedSkins.includes(1);
     document.getElementById('selectDiamond').disabled = !ownedSkins.includes(2);
@@ -358,11 +428,8 @@ function updateUI() {
     document.getElementById('selectEmerald').disabled = !ownedSkins.includes(4);
     document.getElementById('selectOnyx').disabled = !ownedSkins.includes(5);
     document.getElementById('selectOgpink').disabled = !ownedSkins.includes(6);
-    document.getElementById('selectOgpink').textContent = ownedSkins.includes(6) ? 'Starý Ružový' : 'SecretSkin1';
     document.getElementById('toggleAutoPoop').disabled = autoPoopLevel === 0;
     document.getElementById('toggleAutoPee').disabled = autoPeeLevel === 0;
-    document.getElementById('toggleAutoPoop').textContent = `Auto Kadenie: ${isAutoPoopEnabled ? 'Zapnuté' : 'Vypnuté'}`;
-    document.getElementById('toggleAutoPee').textContent = `Auto Čúranie: ${isAutoPeeEnabled ? 'Zapnuté' : 'Vypnuté'}`;
     document.getElementById('poopButton').disabled = poopCooldown > 0 || isMenuOpen;
     document.getElementById('peeButton').disabled = peeCooldown > 0 || isMenuOpen;
     updateAchievements();
@@ -378,6 +445,7 @@ function toggleMenu(show, section = null) {
     document.getElementById('investmentsMenu').style.display = section === 'investments' ? 'block' : 'none';
     document.getElementById('achievementsMenu').style.display = section === 'achievements' ? 'block' : 'none';
     document.getElementById('howToPlayMenu').style.display = section === 'howToPlay' ? 'block' : 'none';
+    document.getElementById('settingsMenu').style.display = section === 'settings' ? 'block' : 'none';
     stockGraphCanvas.style.display = section === 'investments' ? 'block' : 'none';
     updateUI();
     if (section === 'investments') drawStockGraph();
@@ -494,12 +562,12 @@ document.addEventListener('keypress', (e) => {
     const key = e.key.toLowerCase();
     if (document.activeElement !== document.getElementById('codeInput')) {
         if (key === 'x' && isMenuOpen) {
-            const subMenus = ['upgradesMenu', 'shopMenu', 'catalogMenu', 'codesMenu', 'investmentsMenu', 'achievementsMenu', 'howToPlayMenu'];
+            const subMenus = ['upgradesMenu', 'shopMenu', 'catalogMenu', 'codesMenu', 'investmentsMenu', 'achievementsMenu', 'howToPlayMenu', 'settingsMenu'];
             const isSubMenuOpen = subMenus.some(id => document.getElementById(id).style.display === 'block');
             if (isSubMenuOpen) {
-                toggleMenu(true); // Vráti do hlavného menu
+                toggleMenu(true);
             } else {
-                toggleMenu(false); // Zatvorí menu a vráti do hry
+                toggleMenu(false);
             }
         } else if (key === 'k' && !isMenuOpen && poopCooldown <= 0) {
             document.getElementById('poopButton').click();
@@ -564,6 +632,10 @@ document.getElementById('howToPlayButton').addEventListener('click', () => {
     toggleMenu(true, 'howToPlay');
 });
 
+document.getElementById('settingsButton').addEventListener('click', () => {
+    toggleMenu(true, 'settings');
+});
+
 document.getElementById('closeMenuButton').addEventListener('click', () => {
     toggleMenu(false);
 });
@@ -595,6 +667,11 @@ document.getElementById('graphStock3').addEventListener('click', () => {
 
 document.getElementById('graphStock4').addEventListener('click', () => {
     currentGraphStock = 4;
+    drawStockGraph();
+});
+
+document.getElementById('graphStock5').addEventListener('click', () => {
+    currentGraphStock = 5;
     drawStockGraph();
 });
 
@@ -905,6 +982,27 @@ document.getElementById('toggleAutoPee').addEventListener('click', () => {
         updateUI();
         saveProgress();
     }
+});
+
+document.getElementById('poopParticles').addEventListener('change', (e) => {
+    settings.poopParticles = e.target.checked;
+    saveProgress();
+});
+
+document.getElementById('peeParticles').addEventListener('change', (e) => {
+    settings.peeParticles = e.target.checked;
+    saveProgress();
+});
+
+document.getElementById('critParticles').addEventListener('change', (e) => {
+    settings.critParticles = e.target.checked;
+    saveProgress();
+});
+
+document.getElementById('fontSelect').addEventListener('change', (e) => {
+    settings.font = e.target.value;
+    applySettings();
+    saveProgress();
 });
 
 window.buyStock = buyStock;

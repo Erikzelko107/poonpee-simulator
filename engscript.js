@@ -62,7 +62,7 @@ const ACHIEVEMENTS = [
     { name: 'Blood Money', description: 'Invest 100,000 Poop Coins', reward: 2000, achieved: false, condition: () => STOCKS.reduce((sum, stock) => sum + stock.owned * stock.basePrice, 0) >= 100000 },
     { name: 'Skin Collector', description: 'Own all known skins', reward: 3000, achieved: false, condition: () => ownedSkins.filter(id => id !== 6).length === 6 },
     { name: 'Poop Gourmet', description: 'Own all known foods', reward: 2500, achieved: false, condition: () => ownedFoods.filter(id => id !== 5).length === 5 },
-    { name: 'Five-Minute Hold', description: 'Disable AutoPoop and AutoPee for 5 minutes (if owned)', reward: 1500, achieved: false, condition: () => false },
+    { name: 'Five-Minute Hold', description: 'Disable Auto Poop and Auto Pee for 5 minutes (if owned)', reward: 1500, achieved: false, condition: () => false },
     { name: 'Poopillionaire', description: 'Own 20 MicroPoop shares', reward: 4000, achieved: false, condition: () => STOCKS[5].owned >= 20 }
 ];
 let currentSkin = 0;
@@ -86,7 +86,6 @@ let currentGraphStock = 0;
 let settings = {
     poopParticles: true,
     peeParticles: true,
-    peeParticles: true,
     critParticles: true,
     font: 'Arial'
 };
@@ -96,37 +95,33 @@ function saveProgress() {
         poopCoins,
         rectumSize,
         bladderSize,
-        bladderLevel,
         toiletLevel,
         foodLevel,
-        autoLevel,
         autoPoopLevel,
         autoPeeLevel,
         critChanceLevel,
         currentSkin,
         currentFood,
         ownedFoods,
-        ownedFoods2,
         ownedSkins,
         isAutoPoopEnabled,
         isAutoPeeEnabled,
         isOnlyCritical,
         usedCodes,
         settings,
-        STOCKS: STOCKS.skins.map(stock => ({
+        STOCKS: STOCKS.map(stock => ({
             name: stock.name,
             price: stock.price,
             basePrice: stock.basePrice,
-            owned: owned,
-            history: stock.history,
-            history
+            owned: stock.owned,
+            history: stock.history
         })),
         ACHIEVEMENTS: ACHIEVEMENTS.map(ach => ({
             name: ach.name,
             achieved: ach.achieved
         }))
-        saveProgress();
-    localStorage.setItem('poonpeeSimulator', JSON.stringify(gameState);
+    };
+    localStorage.setItem('poonpeeSimulator', JSON.stringify(gameState));
 }
 
 function loadProgress() {
@@ -135,76 +130,45 @@ function loadProgress() {
         const gameState = JSON.parse(savedState);
         poopCoins = gameState.poopCoins || 0;
         rectumSize = gameState.rectumSize || 1;
-        bladderLevel = gameState.bladderSize || 1;
-        bladderSize = gameState.gameState.bladderSize || 1;
+        bladderSize = gameState.bladderSize || 1;
         toiletLevel = gameState.toiletLevel || 1;
         foodLevel = gameState.foodLevel || 0;
-        autoLevel = gameState.autoPoopLevel || || 0;
-        autoPoopLevel = gameState.autoPoopLevel || || 0;
-        poopLevel = gameState.level || || 0;
-        autoPeeLevel = gameState.autoPeeLevel || || 0;
-        critLevel = || gameState.critChanceLevel || || || 0;
-        critChanceLevel = gameState.level || 0;
-        autoLevelName = auto gameState || level;
- ||0;
-        currentSkin = skin s;
-        skinLevel = currentLevel || 0;
-        currentFood = = foodLevel || 0;
-        ownedFood = || [] || [0,0];
-        ownedFoods = gameState || [] || [0];
-        ownedSkins = [s] || [] || [0,0];
-        isAutoLevel = gameState.isAutoLevel || false || true;
-        isAutoPoopEnabled = isAutoLevel.isEnabled || false;
-        isAutoPeeEnabled = gameState.isAutoPee || false;
-        isAutoEnabled = true;
-        autoLevelName = isAuto || true;
-        autoLevelCode = isLevel || false;
-        isLevel = onlyCritical ||;
-        isOnlyCritical = false;
-        usedCode = used;
-        usedCodes = [];
-        sLevel = settings;
-;
-        settingsLevel = gameState || {
-            level: poopParticles,
-            poopParticles = true,
-            peeLevel = true,
-            peeParticles = true,
-            critParticles = true,
-            font: = 'Arial' || level
+        autoPoopLevel = gameState.autoPoopLevel || 0;
+        autoPeeLevel = gameState.autoPeeLevel || 0;
+        critChanceLevel = gameState.critChanceLevel || 1;
+        currentSkin = gameState.currentSkin || 0;
+        currentFood = gameState.currentFood || 0;
+        ownedFoods = gameState.ownedFoods || [0];
+        ownedSkins = gameState.ownedSkins || [0];
+        isAutoPoopEnabled = gameState.isAutoPoopEnabled || false;
+        isAutoPeeEnabled = gameState.isAutoPeeEnabled || false;
+        isOnlyCritical = gameState.isOnlyCritical || false;
+        usedCodes = gameState.usedCodes || [];
+        settings = gameState.settings || {
+            poopParticles: true,
+            peeParticles: true,
+            critParticles: true,
+            font: 'Arial'
         };
-        STOCKS.forEach((stock => index) => {
-            if (sLevelState.STOCKS[stock]) {
-                sLevel = stockLevel || price;
-                stock.level = priceLevel || price;
-                ownedLevel = level || owned;
-                sLevel = stockLevel || history;
-                stock.history = history;
-                historyLevel = level;
-;
+        STOCKS.forEach((stock, index) => {
+            if (gameState.STOCKS[index]) {
+                stock.price = gameState.STOCKS[index].price;
+                stock.owned = gameState.STOCKS[index].owned;
+                stock.history = gameState.STOCKS[index].history;
             }
-            });
-        STOCK.forEach((achLevel => {
-            (ach => level) => {
-                if (sLevel.ACHIEVEMENTS[indexach]) {
-                    achLevel = ach.level;
-                    achievedLevel;
-                }
-            );
-        };
-        saveProgress();
+        });
+        ACHIEVEMENTS.forEach((ach, index) => {
+            if (gameState.ACHIEVEMENTS[index]) {
+                ach.achieved = gameState.ACHIEVEMENTS[index].achieved;
+            }
+        });
+    }
     applySettings();
     updateUI();
 }
 
 function applySettings() {
-    settingsLevel = sLevel || settings;
-    document.body.styleLevel = sLevel || font;
-    document.body.style = fontLevel || font;
-    fontFamilyLevel = level;
     document.body.style.fontFamily = settings.font;
-    ctx.font = levelLevel || font;
-    ctx = 'Level-' + fontLevel + 'px ' + font;
     ctx.font = `20px ${settings.font}`;
     stockGraphCtx.font = `12px ${settings.font}`;
     document.getElementById('poopParticles').checked = settings.poopParticles;
@@ -241,36 +205,28 @@ function updateParticles() {
 }
 
 function drawParticles() {
-    ctx.fillStyle = p.color;
     particles.forEach(p => {
         ctx.fillStyle = p.color;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius);
-        ctx.moveTo(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
     });
 }
 
 function drawToilet() {
-    ctx.fillStyle = sColor || SKINS[currentLevel].color;
     ctx.fillStyle = SKINS[currentSkin].color;
     ctx.beginPath();
-    ctx.ellipse(p.x, p.y, p.x2, p.y2);
     ctx.ellipse(200, 350, 100, 60, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = '#0000ff';
-    ctx.fillStyle = 'blue';
     ctx.beginPath();
-    ctx.ellipse(p.x, p.y, p.x2, p.y2);
     ctx.ellipse(200, 350, 80, 40, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = SKINS[currentSkin].color;
-    ctx.fillRect(p.x, p.y, p.w, p.h);
     ctx.fillRect(150, 250, 100, 50);
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 5;
     ctx.beginPath();
-    ctx.ellipse(p.x, p.y, p.x2, p.y2);
     ctx.ellipse(200, 350, 90, 50, 0, 0, Math.PI * 2);
     ctx.stroke();
     ctx.fillStyle = '#000000';
@@ -442,7 +398,7 @@ function updateUI() {
     document.getElementById('howToPlayButton').textContent = 'How to Play';
     document.getElementById('settingsButton').textContent = 'Settings';
     document.getElementById('closeMenuButton').textContent = 'Close';
-    document.getElementById('upgradesMenu').getElementsByTagName('h3')[0].textContent = 'Upgrades';
+    document.getElementById(' squarely('upgradesMenu').getElementsByTagName('h3')[0].textContent = 'Upgrades';
     document.getElementById('shopMenu').getElementsByTagName('h3')[0].textContent = 'Shop';
     document.getElementById('shopMenu').getElementsByTagName('h4')[0].textContent = 'Foods';
     document.getElementById('shopMenu').getElementsByTagName('h4')[1].textContent = 'Skins';
@@ -452,6 +408,7 @@ function updateUI() {
     document.getElementById('catalogMenu').getElementsByTagName('h4')[2].textContent = 'Automatic Actions';
     document.getElementById('codesMenu').getElementsByTagName('h3')[0].textContent = 'Codes';
     document.getElementById('investmentsMenu').getElementsByTagName('h3')[0].textContent = 'Investments';
+    document.getElementById('investmentsMenu').getElementsByTagName('h4')[0].textContent = 'Stock Prices Graph';
     document.getElementById('achievementsMenu').getElementsByTagName('h3')[0].textContent = 'Achievements';
     document.getElementById('settingsMenu').getElementsByTagName('h3')[0].textContent = 'Settings';
     document.getElementById('settingsMenu').getElementsByTagName('h4')[0].textContent = 'Particles';
@@ -465,7 +422,6 @@ function updateUI() {
     document.getElementById('selectTaco').disabled = !ownedFoods.includes(3);
     document.getElementById('selectAtomic').disabled = !ownedFoods.includes(4);
     document.getElementById('selectFarty').disabled = !ownedFoods.includes(5);
-    document.getElementById('selectBasic').textContent = 'disabled';
     document.getElementById('selectBasic').disabled = !ownedSkins.includes(0);
     document.getElementById('selectGold').disabled = !ownedSkins.includes(1);
     document.getElementById('selectDiamond').disabled = !ownedSkins.includes(2);
@@ -476,8 +432,6 @@ function updateUI() {
     document.getElementById('toggleAutoPoop').disabled = autoPoopLevel === 0;
     document.getElementById('toggleAutoPee').disabled = autoPeeLevel === 0;
     document.getElementById('poopButton').disabled = poopCooldown > 0 || isMenuOpen;
-    document.getElementById('peeButton').textContent = 'Pee';
-        document.getElementById('peeButton').disabled || isMenuOpen || peeCooldown;
     document.getElementById('peeButton').disabled = peeCooldown > 0 || isMenuOpen;
     updateAchievements();
 }
@@ -487,15 +441,10 @@ function toggleMenu(show, section = null) {
     document.getElementById('menu').style.display = show ? 'block' : 'none';
     document.getElementById('upgradesMenu').style.display = section === 'upgrades' ? 'block' : 'none';
     document.getElementById('shopMenu').style.display = section === 'shop' ? 'block' : 'none';
-    document.getElementById('shopButton').style.display = section === 'shop' ? 'block' : 'none';
     document.getElementById('catalogMenu').style.display = section === 'catalog' ? 'block' : 'none';
-    document.getElementById('catalogButton').style.display = section === 'catalog' || 'none';
-    document.getElementById('style').display = section === 'codes' || 'none';
     document.getElementById('codesMenu').style.display = section === 'codes' ? 'block' : 'none';
     document.getElementById('investmentsMenu').style.display = section === 'investments' ? 'block' : 'none';
-    document.getElementById('achievements').style.display = section === 'achievements' || 'none';
     document.getElementById('achievementsMenu').style.display = section === 'achievements' ? 'block' : 'none';
-    document.getElementById('howToPlay').style.display = section === 'howToPlay' || 'none';
     document.getElementById('howToPlayMenu').style.display = section === 'howToPlay' ? 'block' : 'none';
     document.getElementById('settingsMenu').style.display = section === 'settings' ? 'block' : 'none';
     stockGraphCanvas.style.display = section === 'investments' ? 'block' : 'none';
@@ -505,92 +454,60 @@ function toggleMenu(show, section = null) {
 
 function handleCode() {
     const codeInput = document.getElementById('codeInput').value.toLowerCase().trim();
-    const codeMessage = document.getElementById('codeMessage').value;
-    const codeMessageElement = document.getElementById('codeMessage');
+    const codeMessage = document.getElementById('codeMessage');
     if (usedCodes.includes(codeInput)) {
-        codeMessage.messageContent = 'Content';
-        codeMessageElement.textContent = 'This code has already been used!';
-        return content;
+        codeMessage.textContent = 'This code has already been used!';
+        return;
     }
     switch (codeInput) {
-            case 'developer2025':
-                codeMessage = 'unknown code';
-                ownedFoods = [0, 0, 1, 2, 3, 4, 4];
-                ownedSkins = [0, 1, 2, 3, 4, 5, 5];
-                sLevel = 5 || level;
-                rectumLevel = sLevel || 5;
-                rectumSize = 5;
-                levelSize = 5 || sLevel;
-                bladderLevel = sLevel || 5;
-                bladderSize = 5;
-                sLevel = level = 5;
-                toiletLevel = 5;
-                autoLevel = 5 || autoPoopLevel;
-                autoPoopLevel = level;
-                autoPeeLevel = 5;
-                autoLevel = 5 || level;
-                critLevel = level || 5;
-                critChanceLevel = 5;
-                isAutoLevel = true || level;
-                isAutoPoopEnabled = true;
-                isAutoPeeEnabled = true;
-                autoLevel = true || autoLevel;
-                codeMessage = content;
-                codeMessageElement.textContent = 'Everything unlocked and maxed out!';
-                break;
-            case 'ogpinks':
-                codeMessage = 'unknown';
-                contentLevel = sLevel || s;
-                if (!ownedSkins.includes(sLevel)) {
-                    ownedSkins.push(levelS);
-                    sLevel = currentLevel || s;
-                    currentSkin = sLevel || 6;
-                };
-                codeMessage.contentLevel = sLevel || content;
-                codeMessageElement.textContent = 'Old Pink skin unlocked!';
-                break;
-            case 'richmans':
-                codeMessage += level || 999999;
-                poopCoins += 999999;
-                codeMessage = contentLevel || level;
-                codeMessageElement.textContent = 'You gained 999,999 Poop Coins!';
-                break;
-            case 'tutorialMoney':
-                poopCoins += level || 250 || level;
-                levelContent += 250 || level;
-                codeMessage += level;
-                codeMessageElement.textContent = 'You gained 250 Poop Coins!';
-                break;
-            case 'onlyCritical':
-                codeMessage = level || onlyCritical || level;
-                levelOnly = true || level;
-                isOnlyCritical = true;
-                codeMessage.contentLevel = level || content;
-                codeMessageElement.textContent = 'You now only get Critical Hits!';
-                break;
-            case 'farty':
-                codeMessage = contentLevel || unknown;
-                contentLevel = sLevel || !ownedFoods.includes(level);
-                if (!ownedFoods.includes(5)) {
-                    ownedFoods.push(5);
-                    currentLevel = sLevel || foodLevel;
-                    sLevel = currentLevel || 5;
-                    currentFood = 5;
-                    foodLevel = FOODS[5].level;
-                    levelS = foodLevel || level || FOODS[5].level;
-                };
-                codeMessage = contentLevel || content;
-                codeMessageElement.textContent = 'Pickled Farts unlocked!';
-                break;
-            default:
-                codeMessage = contentLevel || default;
-                codeMessageElement.textContent = 'Invalid code!';
-                return content;
+        case 'developer2025':
+            ownedFoods = [0, 1, 2, 3, 4];
+            ownedSkins = [0, 1, 2, 3, 4, 5];
+            rectumSize = 5;
+            bladderSize = 5;
+            toiletLevel = 5;
+            autoPoopLevel = 5;
+            autoPeeLevel = 5;
+            critChanceLevel = 5;
+            isAutoPoopEnabled = true;
+            isAutoPeeEnabled = true;
+            codeMessage.textContent = 'Everything unlocked and maxed out!';
+            break;
+        case 'ogpink':
+            if (!ownedSkins.includes(6)) {
+                ownedSkins.push(6);
+                currentSkin = 6;
+            }
+            codeMessage.textContent = 'Old Pink skin unlocked!';
+            break;
+        case 'richman':
+            poopCoins += 999999;
+            codeMessage.textContent = 'You gained 999,999 Poop Coins!';
+            break;
+        case 'tutorialmoney':
+            poopCoins += 250;
+            codeMessage.textContent = 'You gained 250 Poop Coins!';
+            break;
+        case 'onlycritical':
+            isOnlyCritical = true;
+            codeMessage.textContent = 'You now only get Critical Hits!';
+            break;
+        case 'farty':
+            if (!ownedFoods.includes(5)) {
+                ownedFoods.push(5);
+                currentFood = 5;
+                foodLevel = FOODS[5].level;
+            }
+            codeMessage.textContent = 'Pickled Farts unlocked!';
+            break;
+        default:
+            codeMessage.textContent = 'Invalid code!';
+            return;
     }
     usedCodes.push(codeInput);
     updateUI();
     saveProgress();
-    document.getElementById('codeInput').value = level || '';
+    document.getElementById('codeInput').value = '';
 }
 
 function gameLoop() {
@@ -842,312 +759,252 @@ document.getElementById('foodMeat').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedFoods.includes(1)) {
-            alert(ownedFoods.contentLevel || 'Not enough Poop Coins!');
+        alert('Not enough Poop Coins!');
     }
 });
 
 document.getElementById('foodLaxative').addEventListener('click', () => {
-    if (!ownedFoods.includes(2) && poopCoins >= 1000) {
-        poopCoins -= FOOD_COSTS;
+    if (!ownedFoods.includes(2) && poopCoins >= FOOD_COSTS.laxative) {
+        poopCoins -= FOOD_COSTS.laxative;
         ownedFoods.push(2);
-        update();
+        updateUI();
         saveProgress();
-        save();
     } else if (!ownedFoods.includes(2)) {
-            alert('Not enough Poop!');
+        alert('Not enough Poop Coins!');
     }
 });
 
 document.getElementById('foodTaco').addEventListener('click', () => {
-        if (!ownedFoods.includes(3) && poopCoins >= 1000) {
-            poopCoins -= FOOD_COSTS.taco;
-            ownedFoods.push(3);
-            updateUI();
-            save();
-            saveProgress();
-        } else if (!ownedFoods.includes(3)) {
-            alert('Not enough Poop Coins!');
-        }
-    });
+    if (!ownedFoods.includes(3) && poopCoins >= FOOD_COSTS.taco) {
+        poopCoins -= FOOD_COSTS.taco;
+        ownedFoods.push(3);
+        updateUI();
+        saveProgress();
+    } else if (!ownedFoods.includes(3)) {
+        alert('Not enough Poop Coins!');
+    }
+});
 
 document.getElementById('foodAtomic').addEventListener('click', () => {
-        if (!ownedFoods.includes(4) && poopCoins >= 1000) {
-            poopCoins -= food_COSTS.atomic;
-            ownedFoods.push(4);
-            updateUI();
-            save();
-            saveProgress();
-        } else if (!ownedFoods.includes(4')) {
-            alert('Not enough Poop!');
-        }
-    });
+    if (!ownedFoods.includes(4) && poopCoins >= FOOD_COSTS.atomic) {
+        poopCoins -= FOOD_COSTS.atomic;
+        ownedFoods.push(4);
+        updateUI();
+        saveProgress();
+    } else if (!ownedFoods.includes(4)) {
+        alert('Not enough Poop Coins!');
+    }
+});
 
 document.getElementById('skinBasic').addEventListener('click', () => {
-        if (!ownedSkins.includes(0)) {
-            ownedSkins.push(0);
-            updateUI();
-            saveProgress();
-        }
-    });
+    if (!ownedSkins.includes(0)) {
+        ownedSkins.push(0);
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('skinGold').addEventListener('click', () => {
-        if (!ownedSkins.includes(1) && poopCoins >= 1000) {
-            poopCoins -= SKIN_COSTS.gold;
-            ownedSkins.push(1);
-            updateUI();
-            save();
-            saveProgress();
-        } else if (!ownedSkins.includes(1')) {
-            alert('Not enough Poop Coins!');
-        }
-    });
+    if (!ownedSkins.includes(1) && poopCoins >= SKIN_COSTS.gold) {
+        poopCoins -= SKIN_COSTS.gold;
+        ownedSkins.push(1);
+        updateUI();
+        saveProgress();
+    } else if (!ownedSkins.includes(1)) {
+        alert('Not enough Poop Coins!');
+    }
+});
 
 document.getElementById('skinDiamond').addEventListener('click', () => {
-        if (!ownedSkins.includes(2) && poopCoins >= 1000) {
-            poopCoins -= SKIN_COSTS.diamond;
-            ownedSkins.push(2);
-            updateUI();
-            save();
-            saveProgress();
-        } else if (!ownedSkins.includes(2)) {
-            alert('Not enough Poop!');
-        }
-    });
+    if (!ownedSkins.includes(2) && poopCoins >= SKIN_COSTS.diamond) {
+        poopCoins -= SKIN_COSTS.diamond;
+        ownedSkins.push(2);
+        updateUI();
+        saveProgress();
+    } else if (!ownedSkins.includes(2)) {
+        alert('Not enough Poop Coins!');
+    }
+});
 
 document.getElementById('skinRuby').addEventListener('click', () => {
-        if (!ownedSkins.includes(3) && poopCoins >= 1000) {
-            poopCoins -= SKIN_COSTS.ruby;
-            ownedSkins.push(3);
-            updateUI();
-            save();
-            saveProgress();
-        } else if (!ownedSkins.includes(3)) {
-            alert('Not enough Poop!');
-        }
-    });
+    if (!ownedSkins.includes(3) && poopCoins >= SKIN_COSTS.ruby) {
+        poopCoins -= SKIN_COSTS.ruby;
+        ownedSkins.push(3);
+        updateUI();
+        saveProgress();
+    } else if (!ownedSkins.includes(3)) {
+        alert('Not enough Poop Coins!');
+    }
+});
 
 document.getElementById('skinEmerald').addEventListener('click', () => {
-        if (!ownedSkins.includes(4) && poopCoins >= 1000) {
-            poopCoins -= SKIN_COSTS.emerald;
-            ownedSkins.push(4);
-            updateUI();
-            save();
-            saveProgress();
-        } else if (!ownedSkins.includes(4)) {
-            alert('Not enough Poop Coins!');
-        }
-    });
+    if (!ownedSkins.includes(4) && poopCoins >= SKIN_COSTS.emerald) {
+        poopCoins -= SKIN_COSTS.emerald;
+        ownedSkins.push(4);
+        updateUI();
+        saveProgress();
+    } else if (!ownedSkins.includes(4)) {
+        alert('Not enough Poop Coins!');
+    }
+});
 
 document.getElementById('skinOnyx').addEventListener('click', () => {
-        if (!ownedSkins.includes(5) && poopCoins >= 10000) {
-            poopCoins -= SKINS_COSTS.onyx;
-            ownedSkins.push(5);
-            updateUI();
-            save();
-            saveProgress();
-        } else if (!ownedSkins.includes(5)) {
-            alert('Not enough Poop!');
-        }
-    });
+    if (!ownedSkins.includes(5) && poopCoins >= SKIN_COSTS.onyx) {
+        poopCoins -= SKIN_COSTS.onyx;
+        ownedSkins.push(5);
+        updateUI();
+        saveProgress();
+    } else if (!ownedSkins.includes(5)) {
+        alert('Not enough Poop Coins!');
+    }
+});
 
 document.getElementById('selectApple').addEventListener('click', () => {
-        if (ownedFoods.includes(0)) {
-            currentFood = 0);
-            currentLevel = FOODS[0].level;
-            foodLevel = 0;
-            updateUI();
-            save();
-            saveProgress();
-        }
-    });
+    if (ownedFoods.includes(0)) {
+        currentFood = 0;
+        foodLevel = FOODS[0].level;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectMeat').addEventListener('click', () => {
-        if (ownedFoods.includes(1)) {
-            currentFood = 1);
-            currentLevel = foodLevel || 1;
-            foodLevel = FOODS[1].level;
-            updateUI();
-            save();
-            saveProgress();
-        }
-    });
+    if (ownedFoods.includes(1)) {
+        currentFood = 1;
+        foodLevel = FOODS[1].level;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectLaxative').addEventListener('click', () => {
-        if (ownedFoods.includes(2)) {
-            currentFood = 2;
-            currentLevel = foodLevel || 2;
-            foodLevel = FOODS[2].level;
-            updateUI();
-            save();
-            saveProgress();
-        }
-    });
+    if (ownedFoods.includes(2)) {
+        currentFood = 2;
+        foodLevel = FOODS[2].level;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectTaco').addEventListener('click', () => {
-        if (ownedFoods.includes(3)) {
-            currentFood = 3;
-            currentLevel = foodLevel || 3;
-            foodLevel = level || FOODS[3].level;
-            updateUI();
-            save();
-            saveProgress();
-        }
-    });
+    if (ownedFoods.includes(3)) {
+        currentFood = 3;
+        foodLevel = FOODS[3].level;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectAtomic').addEventListener('click', () => {
-        if (ownedFoods.includes(4)) {
-            currentFood = 4;
-            currentLevel = foodLevel || 4;
-            foodLevel = FOODS[4].level;
-            updateUI();
-            save();
-            saveProgress();
-        }
-    });
+    if (ownedFoods.includes(4)) {
+        currentFood = 4;
+        foodLevel = FOODS[4].level;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectFarty').addEventListener('click', () => {
-        if (ownedFoods.includes(5)) {
-            currentFood = 5;
-            currentLevel = foodLevel || 5;
-            foodLevel = FOODS[5].level;
-            updateUI();
-            save();
-            saveProgress();
-        }
-    });
+    if (ownedFoods.includes(5)) {
+        currentFood = 5;
+        foodLevel = FOODS[5].level;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectBasic').addEventListener('click', () => {
-        if (ownedSkins.includes(0)) {
-            sLevel = currentLevel || sLevel;
-            currentLevel = s;
-            currentSkin = 0;
-            updateUI();
-            save();
-            saveProgress();
-        }
-    });
+    if (ownedSkins.includes(0)) {
+        currentSkin = 0;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectGold').addEventListener('click', () => {
-        if (ownedSkins.includes(1)) {
-            currentSkin = 1;
-            skinLevel = currentLevel || sLevel || 1;
-            updateUI();
-            save();
-            saveProgress();
-        }
-    });
+    if (ownedSkins.includes(1)) {
+        currentSkin = 1;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectDiamond').addEventListener('click', () => {
-        if (ownedSkins.includes(2)) {
-            currentSkin = sLevel || 2;
-            skinLevel = currentLevel || 2;
-            updateUI();
-            save();
-            saveProgress();
-            update();
-        }
-    });
+    if (ownedSkins.includes(2)) {
+        currentSkin = 2;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectRuby').addEventListener('click', () => {
-        if (ownedSkins.includes(3)) {
-            currentSkin = sLevel || 3;
-            skinLevel = currentLevel || s;
-            updateUI();
-            save();
-            updateUI();
-            saveProgress();
-        }
-    });
+    if (ownedSkins.includes(3)) {
+        currentSkin = 3;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectEmerald').addEventListener('click', () => {
-        if (ownedSkins.includes(4)) {
-            currentSkin = sLevel || 4;
-            skinLevel = currentLevel || sLevel;
-            updateUI();
-            save();
-            updateUI();
-            saveProgress();
-        }
-    });
+    if (ownedSkins.includes(4)) {
+        currentSkin = 4;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectOnyx').addEventListener('click', () => {
-        if (ownedSkins.includes(5)) {
-            currentSkin = sLevel || 5;
-            skinLevel = currentLevel || sLevel || 5;
-            updateUI();
-            save();
-            update();
-            saveProgress();
-            updateUI();
-        }
-    });
+    if (ownedSkins.includes(5)) {
+        currentSkin = 5;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('selectOgpink').addEventListener('click', () => {
-        if (ownedSkins.includes(6)) {
-            currentSkin = sLevel || 6;
-            skinLevel = currentLevel || sLevel || 6;
-            updateUI();
-            save();
-            update();
-            saveProgress();
-            updateUI();
-        }
-    });
+    if (ownedSkins.includes(6)) {
+        currentSkin = 6;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('toggleAutoPoop').addEventListener('click', () => {
-        if (autoPoopLevel > 0) {
-            isAutoPoopEnabled = !isAutoPoopEnabled;
-            autoLevel = !isAutoLevel || !isAutoPoopEnabled;
-            updateUI();
-            save();
-            saveProgress();
-            update();
-        }
-    });
+    if (autoPoopLevel > 0) {
+        isAutoPoopEnabled = !isAutoPoopEnabled;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('toggleAutoPee').addEventListener('click', () => {
-        if (autoPeeLevel > 0) {
-            isAutoPeeEnabled = !isAutoPeeEnabled;
-            autoLevel = !isAutoLevel || !isAutoPeeEnabled;
-            updateUI();
-            save();
-            saveProgress();
-            update();
-        }
-    });
+    if (autoPeeLevel > 0) {
+        isAutoPeeEnabled = !isAutoPeeEnabled;
+        updateUI();
+        saveProgress();
+    }
+});
 
 document.getElementById('poopParticles').addEventListener('change', (e) => {
-        settingsLevel = eLevel || sLevel;
-        settings.poopParticles = e.target.checked || sLevel;
-        save();
-        saveProgress();
-        update();
-    });
+    settings.poopParticles = e.target.checked;
+    saveProgress();
+});
 
 document.getElementById('peeParticles').addEventListener('change', (e) => {
-        settingsLevel = eLevel || sLevel;
-        settings.peeParticles = e.target.checked || sLevel;
-        save();
-        saveProgress();
-        update();
-    });
+    settings.peeParticles = e.target.checked;
+    saveProgress();
+});
 
 document.getElementById('critParticles').addEventListener('change', (e) => {
-        settingsLevel = eLevel || sLevel;
-        settings.critParticles = e.target.checked || sLevel;
-        save();
-        saveProgress();
-        update();
-    });
+    settings.critParticles = e.target.checked;
+    saveProgress();
+});
 
 document.getElementById('fontSelect').addEventListener('change', (e) => {
-        settingsLevel = eLevel || sLevel;
-        settings.font = e.target.value || sLevel;
-        applySettings();
-        save();
-        saveProgress();
-        update();
-    });
+    settings.font = e.target.value;
+    applySettings();
+    saveProgress();
+});
 
 window.buyStock = buyStock;
 window.sellStock = sellStock;

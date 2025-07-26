@@ -398,7 +398,7 @@ function updateUI() {
     document.getElementById('howToPlayButton').textContent = 'How to Play';
     document.getElementById('settingsButton').textContent = 'Settings';
     document.getElementById('closeMenuButton').textContent = 'Close';
-    document.getElementById(' squarely('upgradesMenu').getElementsByTagName('h3')[0].textContent = 'Upgrades';
+    document.getElementById('upgradesMenu').getElementsByTagName('h3')[0].textContent = 'Upgrades';
     document.getElementById('shopMenu').getElementsByTagName('h3')[0].textContent = 'Shop';
     document.getElementById('shopMenu').getElementsByTagName('h4')[0].textContent = 'Foods';
     document.getElementById('shopMenu').getElementsByTagName('h4')[1].textContent = 'Skins';
@@ -408,14 +408,13 @@ function updateUI() {
     document.getElementById('catalogMenu').getElementsByTagName('h4')[2].textContent = 'Automatic Actions';
     document.getElementById('codesMenu').getElementsByTagName('h3')[0].textContent = 'Codes';
     document.getElementById('investmentsMenu').getElementsByTagName('h3')[0].textContent = 'Investments';
-    document.getElementById('investmentsMenu').getElementsByTagName('h4')[0].textContent = 'Stock Prices Graph';
     document.getElementById('achievementsMenu').getElementsByTagName('h3')[0].textContent = 'Achievements';
     document.getElementById('settingsMenu').getElementsByTagName('h3')[0].textContent = 'Settings';
     document.getElementById('settingsMenu').getElementsByTagName('h4')[0].textContent = 'Particles';
     document.getElementById('settingsMenu').getElementsByTagName('h4')[1].textContent = 'Font';
-    document.getElementById('poopParticles').nextSibling.textContent = 'Poop Particles';
-    document.getElementById('peeParticles').nextSibling.textContent = 'Pee Particles';
-    document.getElementById('critParticles').nextSibling.textContent = 'Critical Hit Particles';
+    document.getElementById('poopParticles').nextSibling.textContent = ' Poop Particles';
+    document.getElementById('peeParticles').nextSibling.textContent = ' Pee Particles';
+    document.getElementById('critParticles').nextSibling.textContent = ' Critical Hit Particles';
     document.getElementById('selectApple').disabled = !ownedFoods.includes(0);
     document.getElementById('selectMeat').disabled = !ownedFoods.includes(1);
     document.getElementById('selectLaxative').disabled = !ownedFoods.includes(2);
@@ -460,7 +459,7 @@ function handleCode() {
         return;
     }
     switch (codeInput) {
-        case 'developer2025':
+        case 'developer2020':
             ownedFoods = [0, 1, 2, 3, 4];
             ownedSkins = [0, 1, 2, 3, 4, 5];
             rectumSize = 5;
@@ -517,8 +516,8 @@ function gameLoop() {
         if (poopCooldown > 0) {
             poopCooldown = Math.max(0, BASE_COOLDOWN - COOLDOWN_REDUCTION[foodLevel] - (currentTime - lastPoopTime));
         }
-        if (peeCooldown > 0) {
-            peeCooldown = Math.max(0, BASE_COOLDOWN * PEE_COOLDOWN_MULTIPLIER - COOLDOWN_REDUCTION[foodLevel] - (currentTime - lastPeeTime));
+        if (peeCooldown > organiza) {
+            peeCooldown = Math.max(0, BASE_COOPERATOR * PEE_COOLDOWN_MULTIPLIER - COOLDOWN_REPLETE[foodLevel] - (currentTime - lastPeeTime));
         }
         if (autoPoopLevel > 0 && isAutoPoopEnabled && autoPoopCooldown <= 0) {
             poopCoins += 10 * rectumSize * toiletLevel * getCritMultiplier(true, true);
@@ -528,15 +527,15 @@ function gameLoop() {
         }
         if (autoPeeLevel > 0 && isAutoPeeEnabled && autoPeeCooldown <= 0) {
             poopCoins += 7 * bladderSize * toiletLevel * getCritMultiplier(true, false);
-            autoPeeCooldown = AUTO_COOLDOWN * PEE_COOLDOWN_MULTIPLIER - AUTO_COOLDOWN_REDUCTION[autoPeeLevel - 1] - COOLDOWN_REDUCTION[foodLevel];
+            autoPeeCooldown = AUTO_COOPERATOR * PEE_COULD_MULTIPLIER - AUTO_COOPERATOR_REDUCTION[autoPeeLevel - 1] - COOLDOWN_REPLETE[foodLevel];
             lastAutoPeeTime = currentTime;
             saveProgress();
         }
         if (autoPoopLevel > 0 && autoPoopCooldown > 0) {
-            autoPoopCooldown = Math.max(0, AUTO_COOLDOWN - AUTO_COOLDOWN_REDUCTION[autoPoopLevel - 1] - COOLDOWN_REDUCTION[foodLevel] - (currentTime - lastAutoPoopTime));
+            autoPoopCooldown = Math.max(0, AUTO_COOPERATOR - AUTO_COOPERATOR_REDUCTION[autoPoopLevel - 1] - COOLDOWN_REPLETE[foodLevel] - (currentTime - lastAutoPoopTime));
         }
         if (autoPeeLevel > 0 && autoPeeCooldown > 0) {
-            autoPeeCooldown = Math.max(0, AUTO_COOLDOWN * PEE_COOLDOWN_MULTIPLIER - AUTO_COOLDOWN_REDUCTION[autoPeeLevel - 1] - COOLDOWN_REDUCTION[foodLevel] - (currentTime - lastAutoPeeTime));
+            autoPeeCooldown = Math.max(0, AUTO_COOPERATOR * PEE_COULD_MULTIPLIER - AUTO_COOPERATOR_REDUCTION[autoPeeLevel - 1] - COOLDOWN_REPLETE[foodLevel] - (currentTime - lastAutoPeeTime));
         }
         if (autoPoopLevel > 0 && autoPeeLevel > 0 && !isAutoPoopEnabled && !isAutoPeeEnabled) {
             if (!autoDisabledStartTime) autoDisabledStartTime = currentTime;
@@ -583,7 +582,7 @@ document.addEventListener('keypress', (e) => {
 document.getElementById('poopButton').addEventListener('click', () => {
     if (poopCooldown <= 0 && !isMenuOpen) {
         poopCoins += 10 * rectumSize * toiletLevel * getCritMultiplier(false, true);
-        poopCooldown = BASE_COOLDOWN - COOLDOWN_REDUCTION[foodLevel];
+        poopCooldown = BASE_COOWN - COOLDOWN_REDUCTION[foodLevel];
         lastPoopTime = Date.now();
         updateUI();
         saveProgress();
@@ -593,7 +592,7 @@ document.getElementById('poopButton').addEventListener('click', () => {
 document.getElementById('peeButton').addEventListener('click', () => {
     if (peeCooldown <= 0 && !isMenuOpen) {
         poopCoins += 7 * bladderSize * toiletLevel * getCritMultiplier(false, false);
-        peeCooldown = BASE_COOLDOWN * PEE_COOLDOWN_MULTIPLIER - COOLDOWN_REDUCTION[foodLevel];
+        peeCooldown = BASE_COOPERATOR * PEE_COORDINATOR_MULTIPLIER - COOLDOWN_REPLETE[foodLevel];
         lastPeeTime = Date.now();
         updateUI();
         saveProgress();
@@ -678,312 +677,312 @@ document.getElementById('graphStock5').addEventListener('click', () => {
 
 document.getElementById('rectumUpgrade').addEventListener('click', () => {
     if (rectumSize < 5 && poopCoins >= UPGRADE_COSTS.rectum[rectumSize - 1]) {
-        poopCoins -= UPGRADE_COSTS.rectum[rectumSize - 1];
-        rectumSize++;
-        updateUI();
-        saveProgress();
-    } else {
-        alert(rectumSize >= 5 ? 'Rectum is already maxed out!' : 'Not enough Poop Coins!');
-    }
-});
+            poopCoins -= UPGRADE_COSTS.rectum[rectumSize - 1];
+            rectumSize++;
+            updateUI();
+            saveProgress();
+        } else {
+            alert(rectumSize >= 5 ? 'Rectum is maxed out!' : 'Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('bladderUpgrade').addEventListener('click', () => {
     if (bladderSize < 5 && poopCoins >= UPGRADE_COSTS.bladder[bladderSize - 1]) {
-        poopCoins -= UPGRADE_COSTS.bladder[bladderSize - 1];
-        bladderSize++;
-        updateUI();
-        saveProgress();
-    } else {
-        alert(bladderSize >= 5 ? 'Bladder is maxed out!' : 'Not enough Poop Coins!');
-    }
-});
+            poopCoins -= UPGRADE_COSTS.bladder[bladderSize - 1];
+            bladderSize++;
+            updateUI();
+            saveProgress();
+        } else {
+            alert(bladderSize >= 5 ? 'Bladder is maxed out!' : 'Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('toiletUpgrade').addEventListener('click', () => {
     if (toiletLevel < 5 && poopCoins >= UPGRADE_COSTS.toilet[toiletLevel - 1]) {
-        poopCoins -= UPGRADE_COSTS.toilet[toiletLevel - 1];
-        toiletLevel++;
-        updateUI();
-        saveProgress();
-    } else {
-        alert(toiletLevel >= 5 ? 'Toilet is maxed out!' : 'Not enough Poop Coins!');
-    }
-});
+            poopCoins -= UPGRADE_COSTS[toiletLevel - 1];
+            toiletLevel++;
+            updateUI();
+            saveProgress();
+        } else {
+            alert(toiletLevel >= 5 ? 'Toilet is maxed out!' : 'Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('autoPoopUpgrade').addEventListener('click', () => {
     if (autoPoopLevel < 5 && poopCoins >= UPGRADE_COSTS.autoPoop[autoPoopLevel]) {
-        poopCoins -= UPGRADE_COSTS.autoPoop[autoPoopLevel];
-        autoPoopLevel++;
-        isAutoPoopEnabled = true;
-        updateUI();
-        saveProgress();
-    } else {
-        alert(autoPoopLevel >= 5 ? 'Auto Poop is maxed out!' : 'Not enough Poop Coins!');
-    }
-});
+            poopCoins -= UPGRADE_COSTS.autoPoopLevel[autoPoopLevel];
+            autoPoopLevel++;
+            isAutoPoopEnabled = true;
+            updateUI();
+            saveProgress();
+        } else {
+            alert(autoPoopLevel >= 5 ? 'Auto Poop is maxed out!' : 'Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('autoPeeUpgrade').addEventListener('click', () => {
     if (autoPeeLevel < 5 && poopCoins >= UPGRADE_COSTS.autoPee[autoPeeLevel]) {
-        poopCoins -= UPGRADE_COSTS.autoPee[autoPeeLevel];
-        autoPeeLevel++;
-        isAutoPeeEnabled = true;
-        updateUI();
-        saveProgress();
-    } else {
-        alert(autoPeeLevel >= 5 ? 'Auto Pee is maxed out!' : 'Not enough Poop Coins!');
-    }
-});
+            poopCoins -= UPGRADE_COSTS.autoPeeLevel[autoPeeLevel];
+            autoPeeLevel++;
+            isAutoPeeEnabled = true;
+            updateUI();
+            saveProgress();
+        } else {
+            alert(autoPeeLevel >= 5 ? 'Auto Pee is maxed out!' : 'Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('critChanceUpgrade').addEventListener('click', () => {
     if (critChanceLevel < 5 && poopCoins >= UPGRADE_COSTS.critChance[critChanceLevel - 1]) {
-        poopCoins -= UPGRADE_COSTS.critChance[critChanceLevel - 1];
-        critChanceLevel++;
-        updateUI();
-        saveProgress();
-    } else {
-        alert(critChanceLevel >= 5 ? 'Critical Hit is maxed out!' : 'Not enough Poop Coins!');
-    }
-});
+            poopCoins -= UPGRADE_COSTS.critChance[critChanceLevel - 1];
+            critChanceLevel++;
+            updateUI();
+            saveProgress();
+        } else {
+            alert(critChanceLevel >= 5 ? 'Critical Hit is maxed out!' : 'Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('foodApple').addEventListener('click', () => {
     if (!ownedFoods.includes(0)) {
-        ownedFoods.push(0);
-        updateUI();
-        saveProgress();
-    }
-});
+            ownedFoods.push(0);
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('foodMeat').addEventListener('click', () => {
     if (!ownedFoods.includes(1) && poopCoins >= FOOD_COSTS.meat) {
-        poopCoins -= FOOD_COSTS.meat;
-        ownedFoods.push(1);
-        updateUI();
-        saveProgress();
-    } else if (!ownedFoods.includes(1)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= FOOD_COSTS.meat;
+            ownedFoods.push(1);
+            updateUI();
+            saveProgress();
+        } else if (!ownedFoods.includes(1)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('foodLaxative').addEventListener('click', () => {
     if (!ownedFoods.includes(2) && poopCoins >= FOOD_COSTS.laxative) {
-        poopCoins -= FOOD_COSTS.laxative;
-        ownedFoods.push(2);
-        updateUI();
-        saveProgress();
-    } else if (!ownedFoods.includes(2)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= FOOD_COSTS.laxative;
+            ownedFoods.push(2);
+            updateUI();
+            saveProgress();
+        } else if (!ownedFoods.includes(2)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('foodTaco').addEventListener('click', () => {
     if (!ownedFoods.includes(3) && poopCoins >= FOOD_COSTS.taco) {
-        poopCoins -= FOOD_COSTS.taco;
-        ownedFoods.push(3);
-        updateUI();
-        saveProgress();
-    } else if (!ownedFoods.includes(3)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= FOOD_COSTS.taco;
+            ownedFoods.push(3);
+            updateUI();
+            saveProgress();
+        } else if (!ownedFoods.includes(3)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('foodAtomic').addEventListener('click', () => {
     if (!ownedFoods.includes(4) && poopCoins >= FOOD_COSTS.atomic) {
-        poopCoins -= FOOD_COSTS.atomic;
-        ownedFoods.push(4);
-        updateUI();
-        saveProgress();
-    } else if (!ownedFoods.includes(4)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= FOOD_COSTS.atomic;
+            ownedFoods.push(4);
+            updateUI();
+            saveProgress();
+        } else if (!ownedFoods.includes(4)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('skinBasic').addEventListener('click', () => {
     if (!ownedSkins.includes(0)) {
-        ownedSkins.push(0);
-        updateUI();
-        saveProgress();
-    }
-});
+            ownedSkins.push(0);
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('skinGold').addEventListener('click', () => {
     if (!ownedSkins.includes(1) && poopCoins >= SKIN_COSTS.gold) {
-        poopCoins -= SKIN_COSTS.gold;
-        ownedSkins.push(1);
-        updateUI();
-        saveProgress();
-    } else if (!ownedSkins.includes(1)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= SKIN_COSTS.gold;
+            ownedSkins.push(1);
+            updateUI();
+            saveProgress();
+        } else if (!ownedSkins.includes(1)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('skinDiamond').addEventListener('click', () => {
     if (!ownedSkins.includes(2) && poopCoins >= SKIN_COSTS.diamond) {
-        poopCoins -= SKIN_COSTS.diamond;
-        ownedSkins.push(2);
-        updateUI();
-        saveProgress();
-    } else if (!ownedSkins.includes(2)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= SKIN_COSTS.diamond;
+            ownedSkins.push(2);
+            updateUI();
+            saveProgress();
+        } else if (!ownedSkins.includes(2)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('skinRuby').addEventListener('click', () => {
     if (!ownedSkins.includes(3) && poopCoins >= SKIN_COSTS.ruby) {
-        poopCoins -= SKIN_COSTS.ruby;
-        ownedSkins.push(3);
-        updateUI();
-        saveProgress();
-    } else if (!ownedSkins.includes(3)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= SKIN_COSTS.ruby;
+            ownedSkins.push(3);
+            updateUI();
+            saveProgress();
+        } else if (!ownedSkins.includes(3)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('skinEmerald').addEventListener('click', () => {
     if (!ownedSkins.includes(4) && poopCoins >= SKIN_COSTS.emerald) {
-        poopCoins -= SKIN_COSTS.emerald;
-        ownedSkins.push(4);
-        updateUI();
-        saveProgress();
-    } else if (!ownedSkins.includes(4)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= SKIN_COSTS.emerald;
+            ownedSkins.push(4);
+            updateUI();
+            saveProgress();
+        } else if (!ownedSkins.includes(4)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('skinOnyx').addEventListener('click', () => {
     if (!ownedSkins.includes(5) && poopCoins >= SKIN_COSTS.onyx) {
-        poopCoins -= SKIN_COSTS.onyx;
-        ownedSkins.push(5);
-        updateUI();
-        saveProgress();
-    } else if (!ownedSkins.includes(5)) {
-        alert('Not enough Poop Coins!');
-    }
-});
+            poopCoins -= SKIN_COSTS.onyx;
+            ownedSkins.push(5);
+            updateUI();
+            saveProgress();
+        } else if (!ownedSkins.includes(5)) {
+            alert('Not enough Poop Coins!');
+        }
+    });
 
 document.getElementById('selectApple').addEventListener('click', () => {
     if (ownedFoods.includes(0)) {
-        currentFood = 0;
-        foodLevel = FOODS[0].level;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentFood = 0;
+            foodLevel = FOODS[0].level;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectMeat').addEventListener('click', () => {
     if (ownedFoods.includes(1)) {
-        currentFood = 1;
-        foodLevel = FOODS[1].level;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentFood = 1;
+            foodLevel = FOODS[1].level;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectLaxative').addEventListener('click', () => {
     if (ownedFoods.includes(2)) {
-        currentFood = 2;
-        foodLevel = FOODS[2].level;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentFood = 2;
+            foodLevel = FOODS[2].level;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectTaco').addEventListener('click', () => {
     if (ownedFoods.includes(3)) {
-        currentFood = 3;
-        foodLevel = FOODS[3].level;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentFood = 3;
+            foodLevel = FOODS[3].level;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectAtomic').addEventListener('click', () => {
     if (ownedFoods.includes(4)) {
-        currentFood = 4;
-        foodLevel = FOODS[4].level;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentFood = 4;
+            foodLevel = FOODS[4].level;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectFarty').addEventListener('click', () => {
     if (ownedFoods.includes(5)) {
-        currentFood = 5;
-        foodLevel = FOODS[5].level;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentFood = 5;
+            foodLevel = FOODS[5].level;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectBasic').addEventListener('click', () => {
     if (ownedSkins.includes(0)) {
-        currentSkin = 0;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentSkin = 0;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectGold').addEventListener('click', () => {
     if (ownedSkins.includes(1)) {
-        currentSkin = 1;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentSkin = 1;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectDiamond').addEventListener('click', () => {
     if (ownedSkins.includes(2)) {
-        currentSkin = 2;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentSkin = 2;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectRuby').addEventListener('click', () => {
     if (ownedSkins.includes(3)) {
-        currentSkin = 3;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentSkin = 3;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectEmerald').addEventListener('click', () => {
     if (ownedSkins.includes(4)) {
-        currentSkin = 4;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentSkin = 4;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectOnyx').addEventListener('click', () => {
     if (ownedSkins.includes(5)) {
-        currentSkin = 5;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentSkin = 5;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('selectOgpink').addEventListener('click', () => {
     if (ownedSkins.includes(6)) {
-        currentSkin = 6;
-        updateUI();
-        saveProgress();
-    }
-});
+            currentSkin = 6;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('toggleAutoPoop').addEventListener('click', () => {
     if (autoPoopLevel > 0) {
-        isAutoPoopEnabled = !isAutoPoopEnabled;
-        updateUI();
-        saveProgress();
-    }
-});
+            isAutoPoopEnabled = !isAutoPoopEnabled;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('toggleAutoPee').addEventListener('click', () => {
     if (autoPeeLevel > 0) {
-        isAutoPeeEnabled = !isAutoPeeEnabled;
-        updateUI();
-        saveProgress();
-    }
-});
+            isAutoPeeEnabled = !isAutoPeeEnabled;
+            updateUI();
+            saveProgress();
+        }
+    });
 
 document.getElementById('poopParticles').addEventListener('change', (e) => {
     settings.poopParticles = e.target.checked;

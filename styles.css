@@ -1,135 +1,72 @@
 body {
     font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
     background-color: #f0f0f0;
+}
+.game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0;
-    padding: 20px;
 }
-
 #gameCanvas {
-    border: 2px solid #000000;
-    background-color: #ffffff;
-    margin-bottom: 20px;
+    border: 2px solid #000;
+    background-color: #fff;
 }
-
-#stats {
-    text-align: left;
-    margin-bottom: 20px;
+.ui {
+    margin-top: 10px;
+    text-align: center;
 }
-
-#stats p {
+.ui div {
     margin: 5px 0;
-    font-size: 16px;
 }
-
-button {
-    padding: 10px 20px;
+.ui button {
     margin: 5px;
+    padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #ffd700;
-    border: 1px solid #8b4513;
-    border-radius: 5px;
-    transition: background-color 0.3s;
 }
-
-button:hover:not(:disabled) {
-    background-color: #ffeb3b;
-}
-
-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-#menu, #upgradesMenu, #shopMenu, #catalogMenu, #codesMenu, #activitiesMenu, #investmentsMenu, #gamblingMenu, #achievementsMenu, #howToPlayMenu, #settingsMenu, #saveMenu {
-    background-color: #ffffff;
-    border: 2px solid #8b4513;
-    border-radius: 10px;
-    padding: 20px;
+.menu, .sub-menu {
+    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border: 2px solid #000;
+    border-radius: 10px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 80vh;
+    overflow-y: auto;
 }
-
-#menu h2, #upgradesMenu h3, #shopMenu h3, #catalogMenu h3, #codesMenu h3, #activitiesMenu h3, #investmentsMenu h3, #gamblingMenu h3, #achievementsMenu h3, #howToPlayMenu h3, #settingsMenu h3, #saveMenu h3 {
-    margin-top: 0;
-    color: #8b4513;
-}
-
-#menu button, #upgradesMenu button, #shopMenu button, #catalogMenu button, #codesMenu button, #activitiesMenu button, #investmentsMenu button, #gamblingMenu button, #achievementsMenu button, #howToPlayMenu button, #settingsMenu button, #saveMenu button {
-    display: inline-block;
-    width: 200px;
-    margin: 5px;
-}
-
-#shopMenu h4, #catalogMenu h4, #settingsMenu h4 {
-    color: #8b4513;
-    margin: 10px 0;
-}
-
-#codesMenu input, #gamblingMenu input {
-    padding: 10px;
-    margin: 10px;
+.menu button, .sub-menu button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
     font-size: 16px;
-    border: 1px solid #8b4513;
-    border-radius: 5px;
-    width: 200px;
+    cursor: pointer;
 }
-
-#codesMenu p, #gamblingMenu p {
-    color: #ff0000;
+.sub-menu input, .sub-menu select {
+    margin: 5px;
+    padding: 5px;
+    font-size: 14px;
+}
+#stocks div {
     margin: 10px 0;
 }
-
-#stocks, #achievementsList {
-    text-align: left;
-    margin: 10px 0;
-}
-
-#stocks div, #achievementsList div {
-    margin: 10px 0;
-}
-
 #stockGraph {
     display: none;
     margin: 10px auto;
-    border: 1px solid #000000;
+    border: 1px solid #000;
 }
-
-#settingsMenu input[type="checkbox"] {
-    margin-right: 5px;
+#codeMessage, #gambleResult {
+    margin-top: 10px;
+    color: #ff0000;
 }
-
-#settingsMenu select {
-    padding: 5px;
-    font-size: 16px;
-    border: 1px solid #8b4513;
-    border-radius: 5px;
-}
-
-@media (max-width: 600px) {
-    #gameCanvas {
-        width: 300px;
-        height: 375px;
-    }
-
-    button, #codesMenu input, #gamblingMenu input, #menu, #upgradesMenu, #shopMenu, #catalogMenu, #codesMenu, #activitiesMenu, #investmentsMenu, #gamblingMenu, #achievementsMenu, #howToPlayMenu, #settingsMenu, #saveMenu {
-        width: 90%;
-        box-sizing: border-box;
-    }
-
-    #menu button, #upgradesMenu button, #shopMenu button, #catalogMenu button, #codesMenu button, #activitiesMenu button, #investmentsMenu button, #gamblingMenu button, #achievementsMenu button, #howToPlayMenu button, #settingsMenu button, #saveMenu button {
-        width: 100%;
-    }
-
-    #stockGraph {
-        width: 250px;
-        height: 125px;
-    }
+#slotSelect, #slotName {
+    width: 120px;
 }

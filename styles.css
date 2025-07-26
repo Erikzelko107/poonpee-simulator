@@ -1,103 +1,135 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
     font-family: Arial, sans-serif;
-}
-
-canvas {
-    border: 1px solid black;
-}
-
-#ui {
-    margin-left: 20px;
-}
-
-button {
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.info {
-    margin-bottom: 20px;
-}
-
-#menu {
-    display: none;
-    position: absolute;
-    background: white;
-    border: 2px solid black;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
     padding: 20px;
 }
 
-#menu button, #menu select {
+#gameCanvas {
+    border: 2px solid #000000;
+    background-color: #ffffff;
+    margin-bottom: 20px;
+}
+
+#stats {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+#stats p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #ffd700;
+    border: 1px solid #8b4513;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover:not(:disabled) {
+    background-color: #ffeb3b;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#menu, #upgradesMenu, #shopMenu, #catalogMenu, #codesMenu, #activitiesMenu, #investmentsMenu, #gamblingMenu, #achievementsMenu, #howToPlayMenu, #settingsMenu, #saveMenu {
+    background-color: #ffffff;
+    border: 2px solid #8b4513;
+    border-radius: 10px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#menu h2, #upgradesMenu h3, #shopMenu h3, #catalogMenu h3, #codesMenu h3, #activitiesMenu h3, #investmentsMenu h3, #gamblingMenu h3, #achievementsMenu h3, #howToPlayMenu h3, #settingsMenu h3, #saveMenu h3 {
+    margin-top: 0;
+    color: #8b4513;
+}
+
+#menu button, #upgradesMenu button, #shopMenu button, #catalogMenu button, #codesMenu button, #activitiesMenu button, #investmentsMenu button, #gamblingMenu button, #achievementsMenu button, #howToPlayMenu button, #settingsMenu button, #saveMenu button {
+    display: inline-block;
+    width: 200px;
     margin: 5px;
 }
 
-#codesMenu input,
-#investmentsMenu input,
-#settingsMenu select {
+#shopMenu h4, #catalogMenu h4, #settingsMenu h4 {
+    color: #8b4513;
     margin: 10px 0;
-    padding: 5px;
 }
 
-#achievementsMenu div {
+#codesMenu input, #gamblingMenu input {
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    border: 1px solid #8b4513;
+    border-radius: 5px;
+    width: 200px;
+}
+
+#codesMenu p, #gamblingMenu p {
+    color: #ff0000;
+    margin: 10px 0;
+}
+
+#stocks, #achievementsList {
+    text-align: left;
+    margin: 10px 0;
+}
+
+#stocks div, #achievementsList div {
     margin: 10px 0;
 }
 
 #stockGraph {
     display: none;
-    width: 300px;
-    height: 150px;
+    margin: 10px auto;
+    border: 1px solid #000000;
 }
 
-#howToPlayMenu,
-#settingsMenu {
-    display: none;
-    max-width: 400px;
+#settingsMenu input[type="checkbox"] {
+    margin-right: 5px;
 }
 
-.close-submenu {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: 16px;
+#settingsMenu select {
     padding: 5px;
-    cursor: pointer;
+    font-size: 16px;
+    border: 1px solid #8b4513;
+    border-radius: 5px;
 }
 
-/* Responzívny dizajn pre mobil */
 @media (max-width: 600px) {
-    body {
-        flex-direction: column;
-        align-items: center;
+    #gameCanvas {
+        width: 300px;
+        height: 375px;
     }
-    canvas {
+
+    button, #codesMenu input, #gamblingMenu input, #menu, #upgradesMenu, #shopMenu, #catalogMenu, #codesMenu, #activitiesMenu, #investmentsMenu, #gamblingMenu, #achievementsMenu, #howToPlayMenu, #settingsMenu, #saveMenu {
         width: 90%;
-        height: auto;
+        box-sizing: border-box;
     }
-    #ui {
-        margin-left: 0;
-        text-align: center;
-        margin-top: 10px;
+
+    #menu button, #upgradesMenu button, #shopMenu button, #catalogMenu button, #codesMenu button, #activitiesMenu button, #investmentsMenu button, #gamblingMenu button, #achievementsMenu button, #howToPlayMenu button, #settingsMenu button, #saveMenu button {
+        width: 100%;
     }
-    #menu {
-        width: 90%;
-        max-width: 300px;
-    }
-    button, select {
-        font-size: 14px;
-        padding: 8px;
+
+    #stockGraph {
+        width: 250px;
+        height: 125px;
     }
 }

@@ -3,40 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kakať a Čúrať Simulátor</title>
+    <title>Poo'n'Pee Simulator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
-        <canvas id="gameCanvas" width="400" height="600"></canvas>
-        <div class="ui">
-            <div id="coins">Kakať Coiny: 0</div>
-            <div id="rectum">Konečník: Úroveň 1</div>
-            <div id="bladder">Mechúr: Úroveň 1</div>
-            <div id="toilet">Záchod: Úroveň 1</div>
-            <div id="food">Jedlo: Jablko</div>
-            <div id="autoPoop">Auto Kadenie: Zamknuté</div>
-            <div id="autoPee">Auto Čúranie: Zamknuté</div>
-            <div id="critChance">Kritický Zásah: Úroveň 1</div>
-            <div id="poopCooldown">Cooldown Kadenia: 0.0s</div>
-            <div id="peeCooldown">Cooldown Čúrania: 0.0s</div>
-            <button id="poopButton">Kadiť</button>
-            <button id="peeButton">Čúrať</button>
-            <button id="menuButton">Menu</button>
+    <div id="game">
+        <canvas id="gameCanvas" width="400" height="500"></canvas>
+        <div id="stats">
+            <p id="coins">Kakať Mince: 0</p>
+            <p id="rectum">Konečník: Úroveň 1</p>
+            <p id="bladder">Mechúr: Úroveň 1</p>
+            <p id="toilet">Záchod: Úroveň 1</p>
+            <p id="food">Jedlo: Jablko</p>
+            <p id="autoPoop">Auto Kadenie: Zamknuté</p>
+            <p id="autoPee">Auto Čúranie: Zamknuté</p>
+            <p id="critChance">Kritický Zásah: Úroveň 1</p>
+            <p id="poopCooldown">Cooldown Kadenia: 0.0s</p>
+            <p id="peeCooldown">Cooldown Čúrania: 0.0s</p>
         </div>
-        <div id="menu" class="menu">
+        <button id="poopButton">Kadiť</button>
+        <button id="peeButton">Čúrať</button>
+        <button id="menuButton">Menu</button>
+        <div id="menu" style="display: none;">
             <h2>Menu</h2>
             <button id="upgradesButton">Upgrady</button>
             <button id="shopButton">Obchod</button>
             <button id="catalogButton">Katalóg</button>
             <button id="codesButton">Kódy</button>
-            <button id="activitiesButton">Aktivity</button>
+            <button id="investmentsButton">Investície</button>
+            <button id="gamblingButton">Aktivity</button>
             <button id="achievementsButton">Úspechy</button>
             <button id="howToPlayButton">Ako Hrať</button>
             <button id="settingsButton">Nastavenia</button>
             <button id="closeMenuButton">Zavrieť</button>
         </div>
-        <div id="upgradesMenu" class="sub-menu">
+        <div id="upgradesMenu" style="display: none;">
             <h3>Upgrady</h3>
             <button id="rectumUpgrade">Upgradovať Konečník</button>
             <button id="bladderUpgrade">Upgradovať Mechúr</button>
@@ -45,99 +46,108 @@
             <button id="autoPeeUpgrade">Odomknúť/Upgradovať Auto Čúranie</button>
             <button id="critChanceUpgrade">Upgradovať Kritický Zásah</button>
         </div>
-        <div id="shopMenu" class="sub-menu">
+        <div id="shopMenu" style="display: none;">
             <h3>Obchod</h3>
             <h4>Jedlá</h4>
             <button id="foodApple">Jablko</button>
             <button id="foodMeat">Mäso</button>
             <button id="foodLaxative">Preháňadlo</button>
-            <button id="foodTaco">Taco Bang</button>
-            <button id="foodAtomic">Atomový Mix</button>
+            <button id="foodTaco">Taco Bum</button>
+            <button id="foodAtomic">Atómová Kaša</button>
             <h4>Skiny</h4>
             <button id="skinBasic">Základný</button>
             <button id="skinGold">Zlatý</button>
             <button id="skinDiamond">Diamantový</button>
-            <button id="skinRuby">Rubínový</button>
+            <button id="skinRuby">Rubinový</button>
             <button id="skinEmerald">Smaragdový</button>
-            <button id="skinOnyx">Onyxový</button>
+            <button id="skinOnyx">Ónyxový</button>
         </div>
-        <div id="catalogMenu" class="sub-menu">
+        <div id="catalogMenu" style="display: none;">
             <h3>Katalóg</h3>
             <h4>Vybrať Jedlo</h4>
             <button id="selectApple">Jablko</button>
             <button id="selectMeat">Mäso</button>
             <button id="selectLaxative">Preháňadlo</button>
-            <button id="selectTaco">Taco Bang</button>
-            <button id="selectAtomic">Atomový Mix</button>
+            <button id="selectTaco">Taco Bum</button>
+            <button id="selectAtomic">Atómová Kaša</button>
             <button id="selectFarty">Nakladané Prdy</button>
             <h4>Vybrať Skin</h4>
             <button id="selectBasic">Základný</button>
             <button id="selectGold">Zlatý</button>
             <button id="selectDiamond">Diamantový</button>
-            <button id="selectRuby">Rubínový</button>
+            <button id="selectRuby">Rubinový</button>
             <button id="selectEmerald">Smaragdový</button>
-            <button id="selectOnyx">Onyxový</button>
-            <button id="selectOgpink">Staroružový</button>
+            <button id="selectOnyx">Ónyxový</button>
+            <button id="selectOgpink">Stará Ružová</button>
             <h4>Automatické Akcie</h4>
             <button id="toggleAutoPoop">Auto Kadenie: Vypnuté</button>
             <button id="toggleAutoPee">Auto Čúranie: Vypnuté</button>
         </div>
-        <div id="codesMenu" class="sub-menu">
+        <div id="codesMenu" style="display: none;">
             <h3>Kódy</h3>
             <input type="text" id="codeInput" placeholder="Zadaj kód">
             <button id="submitCode">Odoslať</button>
-            <div id="codeMessage"></div>
+            <p id="codeMessage"></p>
         </div>
-        <div id="activitiesMenu" class="sub-menu">
-            <h3>Aktivity</h3>
-            <h4>Investície</h4>
+        <div id="investmentsMenu" style="display: none;">
+            <h3>Investície</h3>
             <div id="stocks"></div>
             <button id="graphStock0">Tento Papier</button>
             <button id="graphStock1">Caca Cola</button>
-            <button id="graphStock2">Skibidi Záchod</button>
+            <button id="graphStock2">Skibidi Toilet</button>
             <button id="graphStock3">MineKakať</button>
             <button id="graphStock4">CikiBook</button>
-            <button id="graphStock5">MicroKakať</button>
-            <canvas id="stockGraph" width="400" height="200"></canvas>
-            <h4>Gambling</h4>
-            <input type="number" id="gambleAmount" placeholder="Suma na stávku" min="1">
-            <button id="gambleDouble">Zdvojnásobiť (50%)</button>
-            <button id="gambleTriple">Ztrojnásobiť (30%)</button>
-            <button id="gambleQuad">Štvorhnásobiť (15%)</button>
-            <div id="gambleResult"></div>
+            <button id="graphStock5">MicroPoop</button>
+            <canvas id="stockGraph" width="300" height="150"></canvas>
         </div>
-        <div id="achievementsMenu" class="sub-menu">
+        <div id="gamblingMenu" style="display: none;">
+            <h3>Aktivity</h3>
+            <button id="investmentsSubButton">Investície</button>
+            <button id="gamblingSubButton">Gambling</button>
+            <div id="gamblingSubMenu" style="display: none;">
+                <h4>Gambling</h4>
+                <input type="number" id="gambleAmount" placeholder="Suma na stávku" min="1">
+                <button id="gambleX2">2x (50% šanca)</button>
+                <button id="gambleX3">3x (33% šanca)</button>
+                <button id="gambleX4">4x (25% šanca)</button>
+                <p id="gambleMessage"></p>
+            </div>
+        </div>
+        <div id="achievementsMenu" style="display: none;">
             <h3>Úspechy</h3>
             <div id="achievementsList"></div>
         </div>
-        <div id="howToPlayMenu" class="sub-menu">
+        <div id="howToPlayMenu" style="display: none;">
             <h3>Ako Hrať</h3>
-            <p>Klikaj na tlačidlá Kadiť a Čúrať, aby si získaval Kady Coiny. Upgraduj svoj Konečník, Mechúr a Záchod pre vyšší zisk. Kupuj jedlá a skiny v Obchode. Používaj kódy na odmeny a investuj do akcií v Aktivitách. Skúšaj šťastie v Gamblingu!</p>
+            <p>Klikaj na tlačidlá Kadiť a Čúrať na získavanie Kakať Mincí! Upgraduj svoje schopnosti a záchod, nakupuj jedlá a skiny, investuj do akcií a skúšaj šťastie v gamblingu!</p>
         </div>
-        <div id="settingsMenu" class="sub-menu">
+        <div id="settingsMenu" style="display: none;">
             <h3>Nastavenia</h3>
             <h4>Častice</h4>
             <input type="checkbox" id="poopParticles" checked> Častice Kadenia
             <input type="checkbox" id="peeParticles" checked> Častice Čúrania
             <input type="checkbox" id="critParticles" checked> Častice Kritického Zásahu
-            <h4>Font</h4>
+            <h4>Písmo</h4>
             <select id="fontSelect">
                 <option value="Arial">Arial</option>
                 <option value="Times New Roman">Times New Roman</option>
-                <option value="Comic Sans MS">Comic Sans MS</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Georgia">Georgia</option>
             </select>
-            <h4>Uloženie</h4>
-            <div>
-                <label>Slot: <select id="slotSelect">
-                    <option value="0">Slot 1</option>
-                    <option value="slot2">Slot 2</option>
-                    <option value="slot3">Slot 3</option>
-                </select>
-                <input type="slotName" id="slotName" placeholder="Názov slotu">
-                <button id="saveSlot">Uložiť</button>
-                <button id="loadSlot">Načítať</button>
-                <button id="resetSlot">Resetovať</button>
-            </div>
+            <h4>Ukladanie</h4>
+            <button id="saveSlot1">Uložiť Slot 1</button>
+            <button id="loadSlot1">Načítať Slot 1</button>
+            <button id="resetSlot1">Resetovať Slot 1</button>
+            <input type="text" id="nameSlot1" placeholder="Názov Slotu 1">
+            <button id="saveSlot2">Uložiť Slot 2</button>
+            <button id="loadSlot2">Načítať Slot 2</button>
+            <button id="resetSlot2">Resetovať Slot 2</button>
+            <input type="text" id="nameSlot2" placeholder="Názov Slotu 2">
+            <button id="saveSlot3">Uložiť Slot 3</button>
+            <button id="loadSlot3">Načítať Slot 3</button>
+            <button id="resetSlot3">Resetovať Slot 3</button>
+            <input type="text" id="nameSlot3" placeholder="Názov Slotu 3">
         </div>
     </div>
     <script src="svkscript.js"></script>

@@ -7,66 +7,77 @@ body {
     margin: 0;
     background-color: #f0f0f0;
 }
-.game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+#game {
+    text-align: center;
 }
+
 #gameCanvas {
     border: 2px solid #000;
     background-color: #fff;
 }
-.ui {
-    margin-top: 10px;
-    text-align: center;
+
+#stats {
+    margin: 10px 0;
 }
-.ui div {
+
+#stats p {
     margin: 5px 0;
 }
-.ui button {
-    margin: 5px;
+
+button {
     padding: 10px 20px;
+    margin: 5px;
     font-size: 16px;
     cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
 }
-.menu, .sub-menu {
-    display: none;
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#menu, #upgradesMenu, #shopMenu, #catalogMenu, #codesMenu, #investmentsMenu, #gamblingMenu, #achievementsMenu, #howToPlayMenu, #settingsMenu {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border: 2px solid #000;
     border-radius: 10px;
-    text-align: center;
-    max-height: 80vh;
-    overflow-y: auto;
+    max-width: 400px;
+    text-align: left;
 }
-.menu button, .sub-menu button {
+
+#menu button, #upgradesMenu button, #shopMenu button, #catalogMenu button, #codesMenu button, #investmentsMenu button, #gamblingMenu button, #achievementsMenu button, #howToPlayMenu button, #settingsMenu button {
     display: block;
-    margin: 10px auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+    width: 100%;
+    margin: 5px 0;
 }
-.sub-menu input, .sub-menu select {
-    margin: 5px;
-    padding: 5px;
-    font-size: 14px;
+
+#stocks, #achievementsList {
+    margin-top: 10px;
 }
-#stocks div {
-    margin: 10px 0;
+
+#stocks div, #achievementsList div {
+    margin: 5px 0;
 }
+
 #stockGraph {
-    display: none;
-    margin: 10px auto;
+    margin-top: 10px;
     border: 1px solid #000;
 }
-#codeMessage, #gambleResult {
-    margin-top: 10px;
-    color: #ff0000;
+
+#codeInput, #gambleAmount, #nameSlot1, #nameSlot2, #nameSlot3 {
+    padding: 5px;
+    margin: 5px 0;
+    width: 100%;
+    box-sizing: border-box;
 }
-#slotSelect, #slotName {
-    width: 120px;
+
+#codeMessage, #gambleMessage {
+    color: red;
+    margin-top: 5px;
 }

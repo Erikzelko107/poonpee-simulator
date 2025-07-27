@@ -59,7 +59,7 @@ const CRIT_CHANCES = [0.05, 0.1, 0.15, 0.2, 0.25];
 const AUTO_CRIT_CHANCES = [0.025, 0.05, 0.075, 0.1, 0.125];
 const ACHIEVEMENTS = [
     { name: 'Majster Záchoda', description: 'Maximalizuj všetky upgrady', reward: 5000, achieved: false, condition: () => rectumSize === 6 && bladderSize === 6 && toiletLevel === 6 && autoPoopLevel === 5 && autoPeeLevel === 5 && critChanceLevel === 5 },
-    { name: 'Krvavé Peniaze', description: 'Investuj 100,000 Kakať Mincí', reward: 2000, achieved: false, condition: () => STOCKS.reduce((sum, stock) => sum + stock.owned * stock.basePrice, 0) >= 100000 },
+    { name: 'Krvavé Peniaze', description: 'Investuj 100,000 Poop Coinov', reward: 2000, achieved: false, condition: () => STOCKS.reduce((sum, stock) => sum + stock.owned * stock.basePrice, 0) >= 100000 },
     { name: 'Zberateľ Skinov', description: 'Vlastni všetky známe skiny', reward: 3000, achieved: false, condition: () => ownedSkins.filter(id => id !== 6).length === 6 },
     { name: 'Gurmán Kadenia', description: 'Vlastni všetky známe jedlá', reward: 2500, achieved: false, condition: () => ownedFoods.filter(id => id !== 5).length === 5 },
     { name: 'Päťminútová Výdrž', description: 'Vypni Auto Kadenie a Auto Čúranie na 5 minút (ak vlastnené)', reward: 1500, achieved: false, condition: () => false },
@@ -190,6 +190,42 @@ function resetSlot(slotIndex) {
     updateUI();
 }
 
+function fullReset() {
+    poopCoins = 0;
+    rectumSize = 1;
+    bladderSize = 1;
+    toiletLevel = 1;
+    foodLevel = 0;
+    autoPoopLevel = 0;
+    autoPeeLevel = 0;
+    critChanceLevel = 1;
+    currentSkin = 0;
+    currentFood = 0;
+    ownedFoods = [0];
+    ownedSkins = [0];
+    isAutoPoopEnabled = false;
+    isAutoPeeEnabled = false;
+    isOnlyCritical = false;
+    usedCodes = [];
+    autoDisabledStartTime = null;
+    particles = [];
+    currentGraphStock = 0;
+    STOCKS.forEach(stock => {
+        stock.price = stock.basePrice;
+        stock.owned = 0;
+        stock.history = [stock.basePrice];
+    });
+    ACHIEVEMENTS.forEach(ach => ach.achieved = false);
+    localStorage.removeItem('poonpeeSimulator');
+    saveSlots.forEach((slot, index) => {
+        slot.data = null;
+        slot.name = `Slot ${index + 1}`;
+        localStorage.removeItem(`poonpeeSimulatorSlot${index}`);
+    });
+    updateUI();
+    saveProgress();
+}
+
 function renameSlot(slotIndex, name) {
     saveSlots[slotIndex].name = name || `Slot ${slotIndex + 1}`;
     if (saveSlots[slotIndex].data) {
@@ -272,7 +308,7 @@ function drawToilet() {
 function getCritMultiplier(isAuto, isPoop) {
     const isCritical = isOnlyCritical || Math.random() < (isAuto ? AUTO_CRIT_CHANCES[critChanceLevel - 1] : CRIT_CHANCES[critChanceLevel - 1]);
     if (isCritical) {
-        critMessage = 'ČĽUP! Kritický Zásah!';
+        critMessage = 'ČĽUP! Critical Hit!';
         critMessageTimer = Date.now() + 2000;
         createParticles(200, 350, 10, true, isPoop);
         return 2;
@@ -340,7 +376,7 @@ function buyStock(index) {
         updateUI();
         saveProgress();
     } else {
-        alert(amount <= 0 ? 'Zadaj platné množstvo akcií!' : 'Nedostatok Kakať Mincí!');
+        alert(amount <= 0 ? 'Zadaj platné množstvo akcií!' : 'Nedostatok Poop Coinov!');
     }
 }
 
@@ -362,7 +398,7 @@ function gamble(multiplier) {
     const amount = parseInt(document.getElementById('gambleAmount').value) || 0;
     const gambleMessage = document.getElementById('gambleMessage');
     if (amount <= 0 || poopCoins < amount) {
-        gambleMessage.textContent = amount <= 0 ? 'Zadaj platnú sumu!' : 'Nedostatok Kakať Mincí!';
+        gambleMessage.textContent = amount <= 0 ? 'Zadaj platnú sumu!' : 'Nedostatok Poop Coinov!';
         return;
     }
     let chance;
@@ -373,7 +409,7 @@ function gamble(multiplier) {
     if (Math.random() < chance) {
         const winnings = amount * multiplier;
         poopCoins += winnings;
-        gambleMessage.textContent = `Vyhral si ${winnings} Kakať Mincí!`;
+        gambleMessage.textContent = `Vyhral si ${winnings} Poop Coinov!`;
     } else {
         gambleMessage.textContent = 'Prehral si!';
     }
@@ -389,24 +425,24 @@ function updateAchievements() {
         if (ach.condition() && !ach.achieved) {
             ach.achieved = true;
             poopCoins += ach.reward;
-            alert(`Úspech odomknutý: ${ach.name}! Odmena: ${ach.reward} Kakať Mincí`);
+            alert(`Úspech odomknutý: ${ach.name}! Odmena: ${ach.reward} Poop Coinov`);
             saveProgress();
         }
         const div = document.createElement('div');
-        div.textContent = `${ach.name}: ${ach.description} (${ach.achieved ? 'Dokončené' : 'Nedokončené'}) - Odmena: ${ach.reward} Kakať Mincí`;
+        div.textContent = `${ach.name}: ${ach.description} (${ach.achieved ? 'Dokončené' : 'Nedokončené'}) - Odmena: ${ach.reward} Poop Coinov`;
         achievementsList.appendChild(div);
     });
 }
 
 function updateUI() {
-    document.getElementById('coins').textContent = `Kakať Mince: ${poopCoins}`;
+    document.getElementById('coins').textContent = `Poop Coiny: ${poopCoins}`;
     document.getElementById('rectum').textContent = `Konečník: Úroveň ${rectumSize}${rectumSize === 6 ? ' (MAX)' : ''}`;
     document.getElementById('bladder').textContent = `Mechúr: Úroveň ${bladderSize}${bladderSize === 6 ? ' (MAX)' : ''}`;
     document.getElementById('toilet').textContent = `Záchod: Úroveň ${toiletLevel}${toiletLevel === 6 ? ' (MAX)' : ''}`;
     document.getElementById('food').textContent = `Jedlo: ${FOODS[currentFood].name}`;
     document.getElementById('autoPoop').textContent = `Auto Kadenie: ${autoPoopLevel > 0 ? 'Úroveň ' + autoPoopLevel + (isAutoPoopEnabled ? ' (Zapnuté)' : ' (Vypnuté)') : 'Zamknuté'}`;
     document.getElementById('autoPee').textContent = `Auto Čúranie: ${autoPeeLevel > 0 ? 'Úroveň ' + autoPeeLevel + (isAutoPeeEnabled ? ' (Zapnuté)' : ' (Vypnuté)') : 'Zamknuté'}`;
-    document.getElementById('critChance').textContent = `Kritický Zásah: Úroveň ${critChanceLevel}${critChanceLevel === 5 ? ' (MAX)' : ''}`;
+    document.getElementById('critChance').textContent = `Critical Hit: Úroveň ${critChanceLevel}${critChanceLevel === 5 ? ' (MAX)' : ''}`;
     document.getElementById('poopCooldown').textContent = `Cooldown Kadenia: ${(poopCooldown / 1000).toFixed(1)}s`;
     document.getElementById('peeCooldown').textContent = `Cooldown Čúrania: ${(peeCooldown / 1000).toFixed(1)}s`;
     document.getElementById('rectumUpgrade').textContent = `Upgradovať Konečník (${rectumSize < 6 ? UPGRADE_COSTS.rectum[rectumSize - 1] : 'MAX'})`;
@@ -414,7 +450,7 @@ function updateUI() {
     document.getElementById('toiletUpgrade').textContent = `Upgradovať Záchod (${toiletLevel < 6 ? UPGRADE_COSTS.toilet[toiletLevel - 1] : 'MAX'})`;
     document.getElementById('autoPoopUpgrade').textContent = `Odomknúť/Upgradovať Auto Kadenie (${autoPoopLevel < 5 ? UPGRADE_COSTS.autoPoop[autoPoopLevel] : 'MAX'})`;
     document.getElementById('autoPeeUpgrade').textContent = `Odomknúť/Upgradovať Auto Čúranie (${autoPeeLevel < 5 ? UPGRADE_COSTS.autoPee[autoPeeLevel] : 'MAX'})`;
-    document.getElementById('critChanceUpgrade').textContent = `Upgradovať Kritický Zásah (${critChanceLevel < 5 ? UPGRADE_COSTS.critChance[critChanceLevel - 1] : 'MAX'})`;
+    document.getElementById('critChanceUpgrade').textContent = `Upgradovať Critical Hit (${critChanceLevel < 5 ? UPGRADE_COSTS.critChance[critChanceLevel - 1] : 'MAX'})`;
     document.getElementById('foodApple').textContent = `Jablko (${ownedFoods.includes(0) ? 'Vlastnené' : FOOD_COSTS.apple})`;
     document.getElementById('foodMeat').textContent = `Mäso (${ownedFoods.includes(1) ? 'Vlastnené' : FOOD_COSTS.meat})`;
     document.getElementById('foodLaxative').textContent = `Preháňadlo (${ownedFoods.includes(2) ? 'Vlastnené' : FOOD_COSTS.laxative})`;
@@ -472,7 +508,7 @@ function updateUI() {
     document.getElementById('settingsMenu').getElementsByTagName('h4')[2].textContent = 'Ukladanie';
     document.getElementById('poopParticles').nextSibling.textContent = ' Častice Kadenia';
     document.getElementById('peeParticles').nextSibling.textContent = ' Častice Čúrania';
-    document.getElementById('critParticles').nextSibling.textContent = ' Častice Kritického Zásahu';
+    document.getElementById('critParticles').nextSibling.textContent = ' Častice Critical Hitu';
     document.getElementById('nameSlot1').value = saveSlots[0].name;
     document.getElementById('nameSlot2').value = saveSlots[1].name;
     document.getElementById('nameSlot3').value = saveSlots[2].name;
@@ -544,15 +580,15 @@ function handleCode() {
             break;
         case 'richmans':
             poopCoins += 999999;
-            codeMessage.textContent = 'Získal si 999,999 Kakať Mincí!';
+            codeMessage.textContent = 'Získal si 999,999 Poop Coinov!';
             break;
         case 'tutorialmoney':
             poopCoins += 250;
-            codeMessage.textContent = 'Získal si 250 Kakať Mincí!';
+            codeMessage.textContent = 'Získal si 250 Poop Coinov!';
             break;
         case 'onlycritical':
             isOnlyCritical = true;
-            codeMessage.textContent = 'Teraz dostávaš iba Kritické Zásahy!';
+            codeMessage.textContent = 'Teraz dostávaš iba Critical Hity!';
             break;
         case 'farty':
             if (!ownedFoods.includes(5)) {
@@ -606,7 +642,7 @@ function gameLoop() {
                 ACHIEVEMENTS[4].achieved = true;
                 poopCoins += ACHIEVEMENTS[4].reward;
                 autoDisabledStartTime = null;
-                alert('Úspech odomknutý: Päťminútová Výdrž! Odmena: 1500 Kakať Mincí');
+                alert('Úspech odomknutý: Päťminútová Výdrž! Odmena: 1500 Poop Coinov');
                 saveProgress();
             }
         } else {
@@ -762,7 +798,7 @@ document.getElementById('rectumUpgrade').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else {
-        alert(rectumSize >= 6 ? 'Konečník je už na maxime!' : 'Nedostatok Kakať Mincí!');
+        alert(rectumSize >= 6 ? 'Konečník je už na maxime!' : 'Nedostatok Poop Coinov!');
     }
 });
 
@@ -773,7 +809,7 @@ document.getElementById('bladderUpgrade').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else {
-        alert(bladderSize >= 6 ? 'Mechúr je už na maxime!' : 'Nedostatok Kakať Mincí!');
+        alert(bladderSize >= 6 ? 'Mechúr je už na maxime!' : 'Nedostatok Poop Coinov!');
     }
 });
 
@@ -784,7 +820,7 @@ document.getElementById('toiletUpgrade').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else {
-        alert(toiletLevel >= 6 ? 'Záchod je už na maxime!' : 'Nedostatok Kakať Mincí!');
+        alert(toiletLevel >= 6 ? 'Záchod je už na maxime!' : 'Nedostatok Poop Coinov!');
     }
 });
 
@@ -796,7 +832,7 @@ document.getElementById('autoPoopUpgrade').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else {
-        alert(autoPoopLevel >= 5 ? 'Auto Kadenie je už na maxime!' : 'Nedostatok Kakať Mincí!');
+        alert(autoPoopLevel >= 5 ? 'Auto Kadenie je už na maxime!' : 'Nedostatok Poop Coinov!');
     }
 });
 
@@ -808,7 +844,7 @@ document.getElementById('autoPeeUpgrade').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else {
-        alert(autoPeeLevel >= 5 ? 'Auto Čúranie je už na maxime!' : 'Nedostatok Kakať Mincí!');
+        alert(autoPeeLevel >= 5 ? 'Auto Čúranie je už na maxime!' : 'Nedostatok Poop Coinov!');
     }
 });
 
@@ -819,7 +855,7 @@ document.getElementById('critChanceUpgrade').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else {
-        alert(critChanceLevel >= 5 ? 'Kritický Zásah je už na maxime!' : 'Nedostatok Kakať Mincí!');
+        alert(critChanceLevel >= 5 ? 'Critical Hit je už na maxime!' : 'Nedostatok Poop Coinov!');
     }
 });
 
@@ -838,7 +874,7 @@ document.getElementById('foodMeat').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedFoods.includes(1)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -849,7 +885,7 @@ document.getElementById('foodLaxative').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedFoods.includes(2)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -860,7 +896,7 @@ document.getElementById('foodTaco').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedFoods.includes(3)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -871,7 +907,7 @@ document.getElementById('foodAtomic').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedFoods.includes(4)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -890,7 +926,7 @@ document.getElementById('skinGold').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedSkins.includes(1)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -901,7 +937,7 @@ document.getElementById('skinDiamond').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedSkins.includes(2)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -912,7 +948,7 @@ document.getElementById('skinRuby').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedSkins.includes(3)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -923,7 +959,7 @@ document.getElementById('skinEmerald').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedSkins.includes(4)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -934,7 +970,7 @@ document.getElementById('skinOnyx').addEventListener('click', () => {
         updateUI();
         saveProgress();
     } else if (!ownedSkins.includes(5)) {
-        alert('Nedostatok Kakať Mincí!');
+        alert('Nedostatok Poop Coinov!');
     }
 });
 
@@ -1131,6 +1167,13 @@ document.getElementById('resetSlot3').addEventListener('click', () => {
 
 document.getElementById('nameSlot3').addEventListener('change', (e) => {
     renameSlot(2, e.target.value);
+});
+
+document.getElementById('fullReset').addEventListener('click', () => {
+    if (confirm('Naozaj chceš úplne resetovať hru? Všetok progres bude stratený!')) {
+        fullReset();
+        alert('Hra bola úplne resetovaná!');
+    }
 });
 
 document.getElementById('poopParticles').addEventListener('change', (e) => {

@@ -12,28 +12,42 @@ body {
     text-align: center;
 }
 
+#gameArea {
+    display: flex;
+    align-items: flex-start;
+}
+
 #gameCanvas {
     border: 2px solid #000;
     background-color: #fff;
 }
 
+#rightPanel {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 #stats {
-    margin: 10px 0;
+    margin-bottom: 10px;
 }
 
 #stats p {
     margin: 5px 0;
+    text-align: left;
 }
 
 button {
     padding: 10px 20px;
-    margin: 5px;
+    margin: 5px 0;
     font-size: 16px;
     cursor: pointer;
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
+    width: 100px;
 }
 
 button:disabled {

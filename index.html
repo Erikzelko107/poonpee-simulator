@@ -8,22 +8,26 @@
 </head>
 <body>
     <div id="game">
-        <canvas id="gameCanvas" width="400" height="500"></canvas>
-        <div id="stats">
-            <p id="coins">Kakať Mince: 0</p>
-            <p id="rectum">Konečník: Úroveň 1</p>
-            <p id="bladder">Mechúr: Úroveň 1</p>
-            <p id="toilet">Záchod: Úroveň 1</p>
-            <p id="food">Jedlo: Jablko</p>
-            <p id="autoPoop">Auto Kadenie: Zamknuté</p>
-            <p id="autoPee">Auto Čúranie: Zamknuté</p>
-            <p id="critChance">Kritický Zásah: Úroveň 1</p>
-            <p id="poopCooldown">Cooldown Kadenia: 0.0s</p>
-            <p id="peeCooldown">Cooldown Čúrania: 0.0s</p>
+        <div id="gameArea">
+            <canvas id="gameCanvas" width="400" height="500"></canvas>
+            <div id="rightPanel">
+                <div id="stats">
+                    <p id="coins">Poop Coiny: 0</p>
+                    <p id="rectum">Konečník: Úroveň 1</p>
+                    <p id="bladder">Mechúr: Úroveň 1</p>
+                    <p id="toilet">Záchod: Úroveň 1</p>
+                    <p id="food">Jedlo: Jablko</p>
+                    <p id="autoPoop">Auto Kadenie: Zamknuté</p>
+                    <p id="autoPee">Auto Čúranie: Zamknuté</p>
+                    <p id="critChance">Critical Hit: Úroveň 1</p>
+                    <p id="poopCooldown">Cooldown Kadenia: 0.0s</p>
+                    <p id="peeCooldown">Cooldown Čúrania: 0.0s</p>
+                </div>
+                <button id="poopButton">Kadiť</button>
+                <button id="peeButton">Čúrať</button>
+                <button id="menuButton">Menu</button>
+            </div>
         </div>
-        <button id="poopButton">Kadiť</button>
-        <button id="peeButton">Čúrať</button>
-        <button id="menuButton">Menu</button>
         <div id="menu" style="display: none;">
             <h2>Menu</h2>
             <button id="upgradesButton">Upgrady</button>
@@ -44,7 +48,7 @@
             <button id="toiletUpgrade">Upgradovať Záchod</button>
             <button id="autoPoopUpgrade">Odomknúť/Upgradovať Auto Kadenie</button>
             <button id="autoPeeUpgrade">Odomknúť/Upgradovať Auto Čúranie</button>
-            <button id="critChanceUpgrade">Upgradovať Kritický Zásah</button>
+            <button id="critChanceUpgrade">Upgradovať Critical Hit</button>
         </div>
         <div id="shopMenu" style="display: none;">
             <h3>Obchod</h3>
@@ -119,14 +123,14 @@
         </div>
         <div id="howToPlayMenu" style="display: none;">
             <h3>Ako Hrať</h3>
-            <p>Klikaj na tlačidlá Kadiť a Čúrať na získavanie Kakať Mincí! Upgraduj svoje schopnosti a záchod, nakupuj jedlá a skiny, investuj do akcií a skúšaj šťastie v gamblingu!</p>
+            <p>Klikaj na tlačidlá Kadiť a Čúrať na získavanie Poop Coinov! Upgraduj svoje schopnosti a záchod, nakupuj jedlá a skiny, investuj do akcií a skúšaj šťastie v gamblingu!</p>
         </div>
         <div id="settingsMenu" style="display: none;">
             <h3>Nastavenia</h3>
             <h4>Častice</h4>
             <input type="checkbox" id="poopParticles" checked> Častice Kadenia
             <input type="checkbox" id="peeParticles" checked> Častice Čúrania
-            <input type="checkbox" id="critParticles" checked> Častice Kritického Zásahu
+            <input type="checkbox" id="critParticles" checked> Častice Critical Hitu
             <h4>Písmo</h4>
             <select id="fontSelect">
                 <option value="Arial">Arial</option>
@@ -148,6 +152,7 @@
             <button id="loadSlot3">Načítať Slot 3</button>
             <button id="resetSlot3">Resetovať Slot 3</button>
             <input type="text" id="nameSlot3" placeholder="Názov Slotu 3">
+            <button id="fullReset">Úplný Reset</button>
         </div>
     </div>
     <script src="svkscript.js"></script>

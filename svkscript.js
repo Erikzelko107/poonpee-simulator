@@ -354,7 +354,7 @@ function drawStockGraph() {
     const step = stockGraphCanvas.width / (history.length - 1);
     history.forEach((price, i) => {
         const x = i * step;
-        const y = stockGraphCanvas.height - ((price - minPrice) / priceRange) * stockGraphCanvas.height;
+        const y = stockGraphCanvas.height - ((price - minPrice) / priceRange) * stockGraphCtx.height;
         if (i === 0) stockGraphCtx.moveTo(x, y);
         else stockGraphCtx.lineTo(x, y);
     });
